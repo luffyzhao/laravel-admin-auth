@@ -1,0 +1,128 @@
+<?php
+/**
+ *
+ * Author: luffyzhao@vip.126.com
+ * DateTime: 2019/3/26 10:09
+ */
+
+namespace LAuth\Repositories;
+
+use Exception;
+use LTools\Repositories\RepositoryAbstract;
+
+class Menu extends RepositoryAbstract
+{
+
+    /**
+     * RepositoryAbstract constructor.
+     *
+     * @param \LAuth\Models\Menu $model
+     */
+    public function __construct(\LAuth\Models\Menu $model)
+    {
+        $this->model = $model;
+    }
+
+    /**
+     * @param array $columns
+     * @param array $withs
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function getWith(array $columns, array $withs)
+    {
+        $menus = parent::get($columns);
+        $menus->load($withs);
+        return $menus;
+    }
+
+    /**
+     * @param int|string $id
+     * @param array $columns
+     * @return \Illuminate\Database\Eloquent\Model
+     * @author: luffyzhao@vip.126.com
+     * @datetime: 2019/3/27 16:34
+     */
+    public function find($id, array $columns = ['*'])
+    {
+        $model = parent::find($id, $columns);
+        $model->load(['parent', 'children']);
+        return $model;
+    }
+
+    /**
+     * @param $id
+     * @param array $values
+     * @return bool|\Illuminate\Database\Eloquent\Model
+     * @throws \Throwable
+     * @author: luffyzhao@vip.126.com
+     * @datetime: 2019/4/1 15:26
+     */
+    public function update($id, array $values)
+    {
+        $model = $this->find($id);
+        $model->fill($values)->saveOrFail();
+        return $model->authorities()->sync($values['authorities'] ?? []);
+    }
+
+    /**
+     * @param array $attributes
+     * @return bool|\Illuminate\Database\Eloquent\Model
+     * @author: luffyzhao@vip.126.com
+     * @datetime: 2019/4/1 15:12
+     */
+    public function create(array $attributes = [])
+    {
+        $model = parent::create($attributes);
+        if (isset($attributes['authorities'])) {
+            $model->authorities()->attach($attributes['authorities']);
+        }
+        return $model;
+    }
+
+    /**
+     * @param $id
+     * @return bool|mixed|null
+     * @throws Exception
+     * @throws Exception
+     * @author: luffyzhao@vip.126.com
+     * @datetime: 2019/3/27 19:27
+     */
+    public function delete($id)
+    {
+        $model = parent::find($id);
+        if ($model->children()->count()) {
+            throw new Exception('该菜单还有子菜单，不可删除！');
+        }
+        return $model->delete();
+    }
+
+    /**
+     * @param array $data
+     * @author: luffyzhao@vip.126.com
+     * @datetime: 2019/4/1 16:00
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    public function finds(array $data)
+    {
+        $model = $this->model->findMany($data['ids'] ?? []);
+        return $model->load('authorities');
+    }
+
+    /**
+     * editFind
+     * @param $id
+     * @author luffyzhao@vip.126.com
+     * @return \Illuminate\Support\Collection
+     */
+    public function editFind($id)
+    {
+        $row = $this->model->with(['authorities:id', 'parent'])->findOrFail($id)->toArray();
+
+        return collect($row)->map(function ($item, $key) {
+            if ($key === 'authorities') {
+                return collect($item)->pluck('id');
+            }
+            return $item;
+        });
+    }
+}
