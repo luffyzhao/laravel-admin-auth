@@ -8,7 +8,8 @@
         }
     ],
     "require": {
-        "luffyzhao/laravel-tools": "^v4.0"
+        "luffyzhao/laravel-tools": "^v4.0",
+        "ext-json": "*"
     },
     "autoload": {
         "psr-4": {

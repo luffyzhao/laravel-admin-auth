@@ -1,0 +1,74 @@
+{
+    "RECORDS": [
+        {
+            "id": "5",
+            "parent_id": "0",
+            "name": "首页",
+            "url": "home",
+            "sort": "1",
+            "description": "管理后台首页",
+            "created_at": "3/4/2019 02:47:33",
+            "updated_at": "3/4/2019 02:47:33"
+        },
+        {
+            "id": "6",
+            "parent_id": "0",
+            "name": "后台用户",
+            "url": "authorities",
+            "sort": "98",
+            "description": "后台用户管理",
+            "created_at": "3/4/2019 02:48:14",
+            "updated_at": "3/4/2019 02:48:14"
+        },
+        {
+            "id": "7",
+            "parent_id": "6",
+            "name": "用户管理",
+            "url": "authorities.user",
+            "sort": "1",
+            "description": "用户管理",
+            "created_at": "3/4/2019 02:48:40",
+            "updated_at": "3/4/2019 02:48:40"
+        },
+        {
+            "id": "8",
+            "parent_id": "6",
+            "name": "部门管理",
+            "url": "authorities.role",
+            "sort": "2",
+            "description": "部门管理",
+            "created_at": "3/4/2019 02:49:05",
+            "updated_at": "26/4/2019 09:22:47"
+        },
+        {
+            "id": "9",
+            "parent_id": "6",
+            "name": "权限管理",
+            "url": "authorities.authority",
+            "sort": "4",
+            "description": "权限管理",
+            "created_at": "3/4/2019 02:49:29",
+            "updated_at": "26/4/2019 09:23:06"
+        },
+        {
+            "id": "10",
+            "parent_id": "6",
+            "name": "菜单管理",
+            "url": "authorities.menu",
+            "sort": "3",
+            "description": "菜单管理",
+            "created_at": "3/4/2019 02:50:53",
+            "updated_at": "26/4/2019 09:22:56"
+        },
+        {
+            "id": "11",
+            "parent_id": "0",
+            "name": "个人中心",
+            "url": "profile",
+            "sort": "99",
+            "description": "个人中心",
+            "created_at": "9/4/2019 01:55:40",
+            "updated_at": "9/4/2019 01:55:40"
+        }
+    ]
+}
