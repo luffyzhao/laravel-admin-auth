@@ -9,7 +9,7 @@ export const router = new VueRouter({
     routes: [{
         path: '/admin',
         name: 'admin',
-        component: () => import('../components/layout/main'),
+        component: () => import('../views/Index'),
         children: [
             ...home
         ]

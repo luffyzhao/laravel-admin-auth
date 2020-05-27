@@ -8,22 +8,32 @@
                         <span>{{menu.name}}</span>
                     </template>
                     <template v-for="(item, key) in menu.children">
-                        <MenuGroup :title="item.name" v-if="item.children  && item.children.length > 0"
-                                   :key="`${index}-${key}`">
+                        <Submenu v-if="item.children  && item.children.length > 0"
+                                 :key="`${index}-${key}`" :name="item.link">
+                            <template slot="title">
+                                <Icon :type="item.icon"/>
+                                <span>{{item.name}}</span>
+                            </template>
                             <MenuItem v-for="(val, i) in item.children" :name="val.link" :key="`${index}-${key}-${i}`">
-                                <Icon :type="val.icon"/>
-                                <span>{{val.name}}</span>
+                                <div class="ivu-menu-submenu-title">
+                                    <Icon :type="val.icon"/>
+                                    <span>{{val.name}}</span>
+                                </div>
                             </MenuItem>
-                        </MenuGroup>
+                        </Submenu>
                         <MenuItem v-else :name="item.link" :key="`${index}-${key}`">
-                            <Icon :type="item.icon"/>
-                            <span>{{item.name}}</span>
+                            <div class="ivu-menu-submenu-title">
+                                <Icon :type="item.icon"/>
+                                <span>{{item.name}}</span>
+                            </div>
                         </MenuItem>
                     </template>
                 </Submenu>
                 <MenuItem v-else :name="menu.link" :key="index">
-                    <Icon :type="menu.icon"/>
-                    <span>{{menu.name}}</span>
+                    <div class="ivu-menu-submenu-title">
+                        <Icon :type="menu.icon"/>
+                        <span>{{menu.name}}</span>
+                    </div>
                 </MenuItem>
             </template>
         </Menu>
@@ -101,32 +111,66 @@
     }
 
     .ivu-menu-dark {
-        background-color: #000;
+        background-color: transparent;
+        padding: 10px;
+
+        > li {
+            margin-bottom: 10px;
+
+            > .ivu-menu-submenu-title {
+                background-color: #0d82f6 !important;
+                padding: 0 9px !important;
+                border-radius: 3px;
+            }
+
+            > .ivu-menu {
+                width: 182px;
+                margin: 0 auto;
+                background-color: transparent;
+                border-top: 3px solid rgb(22,66,101);
+
+                .ivu-menu-submenu-title, .ivu-menu-item-group-title {
+                    padding: 0 10px !important;
+                    min-width: 180px !important;
+                    background-color: hsla(0, 0%, 100%, .1) !important;
+                    box-sizing: border-box;
+                }
+
+                .ivu-menu{
+                    .ivu-menu-submenu-title, .ivu-menu-item-group-title {
+                        padding: 0 20px !important;
+                        min-width: 180px !important;
+                        background-color: hsla(0, 0%, 100%, .1) !important;
+                        box-sizing: border-box;
+                    }
+                }
+            }
+        }
+    }
+
+    .ivu-menu-submenu-title, .ivu-menu-item-group-title {
+        height: 36px !important;
+        line-height: 36px !important;
     }
 
     .ivu-menu-dark.ivu-menu-vertical .ivu-menu-opened {
-        background-color: #0c212b;
+        background-color: transparent;
     }
 
-    .ivu-menu-dark.ivu-menu-vertical .ivu-menu-submenu .ivu-menu-item-active, .ivu-menu-dark.ivu-menu-vertical .ivu-menu-submenu .ivu-menu-item-active:hover {
-        background-color: rgb(255, 153, 0) !important;
-        color: #000!important;
-    }
-    .ivu-menu-dark.ivu-menu-vertical .ivu-menu-item-active:not(.ivu-menu-submenu), .ivu-menu-dark.ivu-menu-vertical .ivu-menu-item-active:not(.ivu-menu-submenu):hover, .ivu-menu-dark.ivu-menu-vertical .ivu-menu-submenu-title-active:not(.ivu-menu-submenu), .ivu-menu-dark.ivu-menu-vertical .ivu-menu-submenu-title-active:not(.ivu-menu-submenu):hover{
-        background-color: rgb(255, 153, 0) !important;
-        color: #000!important;
+    .ivu-menu-vertical .ivu-menu-submenu-title-icon{
+        right: 10px;
+        font-size: 16px;
     }
 
-    .ivu-menu-dark.ivu-menu-vertical .ivu-menu-opened .ivu-menu-submenu-title {
-        background-color: #121a2a;
+    .ivu-menu-dark.ivu-menu-vertical .ivu-menu-item-active:not(.ivu-menu-submenu),
+    .ivu-menu-dark.ivu-menu-vertical .ivu-menu-submenu-title-active:not(.ivu-menu-submenu) {
+        color: rgb(247, 213, 115) !important;
     }
 
-    .ivu-menu-dark.ivu-menu-vertical .ivu-menu-item:hover, .ivu-menu-dark.ivu-menu-vertical .ivu-menu-submenu-title:hover {
-        background-color: rgb(255, 153, 0) !important;
+    .ivu-menu-vertical .ivu-menu-item,
+    .ivu-menu-vertical .ivu-menu-submenu-title {
+        padding: 0px !important;
     }
 
-    .ivu-menu-dark.ivu-menu-vertical .ivu-menu-item-active:not(.ivu-menu-submenu), .ivu-menu-dark.ivu-menu-vertical .ivu-menu-submenu-title-active:not(.ivu-menu-submenu) {
-        color: #fff;
-    }
 </style>
 

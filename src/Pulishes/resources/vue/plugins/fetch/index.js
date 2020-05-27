@@ -4,7 +4,6 @@ import $store from '../../modules/store/index'
 import {Message} from 'iview'
 import {baseUrl} from "../../libs/util";
 
-const company = /\/company\/(\d)/gi.exec(window.location.pathname)[1];
 
 const instance = axios.create({
     baseURL: baseUrl(),

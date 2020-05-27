@@ -18,10 +18,13 @@ mix.copyDirectory('resources/vue/assets/images', 'public/vendor/images');
 mix.copyDirectory('resources/vue/libs/ueditor', 'public/vendor/ueditor');
 
 mix.extract(['vue', 'axios']);
+
+let date = new Date();
+let version = date.getFullYear() + '000' + date.getTime();
 mix.webpackConfig({
     output: {
         filename: '[name].js',
-        chunkFilename: mix.inProduction() ? 'vendor/js/[name].chunk.js' : 'vendor/js/[name].chunk.js'
+        chunkFilename: 'vendor/js/[name].chunk.js?id=' + version
     }
 });
 mix.options({
@@ -32,3 +35,4 @@ mix.options({
 if (mix.inProduction()) {
     mix.version();
 }
+

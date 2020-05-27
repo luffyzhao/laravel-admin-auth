@@ -13,8 +13,7 @@ const deepCompare = (x, y) => {
  * @returns {string}
  */
 export const baseUrl = () => {
-    const company = /\/company\/(\d)/gi.exec(window.location.pathname)[1];
-    return '/api/' + company + '/';
+    return '/api/';
 }
 
 /**

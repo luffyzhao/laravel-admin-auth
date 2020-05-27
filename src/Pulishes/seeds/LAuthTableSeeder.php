@@ -31,7 +31,7 @@ class LAuthTableSeeder extends Seeder
 
         $jsonArr = json_decode($json);
 
-        if (json_last_error() === JSON_ERROR_NONE) {
+        if (json_last_error() !== JSON_ERROR_NONE) {
             return [];
         }
 
