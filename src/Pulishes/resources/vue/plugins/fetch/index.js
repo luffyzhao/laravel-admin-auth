@@ -3,12 +3,21 @@ import {$cache} from '../cache'
 import $store from '../../modules/store/index'
 import {Message} from 'iview'
 import {baseUrl} from "../../libs/util";
+import FileSaver from 'file-saver';
 
 
 const instance = axios.create({
     baseURL: baseUrl(),
     timeout: 10000
 });
+
+instance.download = (url, data, name = '_文件.xlsx') => {
+    return instance.put(url, data ,{
+        responseType: 'blob'
+    }).then((res) => {
+        FileSaver.saveAs(res, name);
+    });
+};
 
 // 添加请求拦截器
 instance.interceptors.request.use((config) => {
