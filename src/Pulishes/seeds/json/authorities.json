@@ -5,128 +5,128 @@
             "name": "获取后台用户列表",
             "uri": "user.index",
             "description": "获取后台用户列表",
-            "created_at": "3/4/2019 03:15:12",
-            "updated_at": "3/4/2019 03:15:12"
+            "created_at": "2019-02-02 03:15:12",
+            "updated_at": "2019-02-02 03:15:12"
         },
         {
             "id": "8",
             "name": "添加后台用户",
             "uri": "user.store",
             "description": "添加后台用户",
-            "created_at": "3/4/2019 03:15:33",
-            "updated_at": "3/4/2019 03:15:33"
+            "created_at": "2019-02-02 03:15:33",
+            "updated_at": "2019-02-02 03:15:33"
         },
         {
             "id": "9",
             "name": "修改后台用户",
             "uri": "user.update",
             "description": "修改后台用户",
-            "created_at": "3/4/2019 03:15:53",
-            "updated_at": "3/4/2019 03:15:53"
+            "created_at": "2019-02-02 03:15:53",
+            "updated_at": "2019-02-02 03:15:53"
         },
         {
             "id": "10",
             "name": "获取后台菜单列表",
             "uri": "menu.index",
             "description": "获取后台菜单列表",
-            "created_at": "3/4/2019 03:20:23",
-            "updated_at": "3/4/2019 03:20:23"
+            "created_at": "2019-02-02 03:20:23",
+            "updated_at": "2019-02-02 03:20:23"
         },
         {
             "id": "11",
             "name": "添加后台菜单",
             "uri": "menu.store",
             "description": "添加后台菜单",
-            "created_at": "3/4/2019 03:20:43",
-            "updated_at": "3/4/2019 03:20:43"
+            "created_at": "2019-02-02 03:20:43",
+            "updated_at": "2019-02-02 03:20:43"
         },
         {
             "id": "12",
             "name": "修改后台菜单",
             "uri": "menu.update",
             "description": "修改后台菜单",
-            "created_at": "3/4/2019 03:21:01",
-            "updated_at": "3/4/2019 03:21:01"
+            "created_at": "2019-02-02 03:21:01",
+            "updated_at": "2019-02-02 03:21:01"
         },
         {
             "id": "13",
             "name": "删除后台菜单",
             "uri": "menu.destroy",
             "description": "删除后台菜单",
-            "created_at": "3/4/2019 03:21:31",
-            "updated_at": "3/4/2019 03:21:31"
+            "created_at": "2019-02-02 03:21:31",
+            "updated_at": "2019-02-02 03:21:31"
         },
         {
             "id": "14",
             "name": "获取后台权限列表",
             "uri": "authority.index",
             "description": "获取后台权限列表",
-            "created_at": "3/4/2019 03:23:21",
-            "updated_at": "3/4/2019 03:23:21"
+            "created_at": "2019-02-02 03:23:21",
+            "updated_at": "2019-02-02 03:23:21"
         },
         {
             "id": "15",
             "name": "添加后台权限",
             "uri": "authority.store",
             "description": "添加后台权限",
-            "created_at": "3/4/2019 03:23:49",
-            "updated_at": "3/4/2019 03:23:49"
+            "created_at": "2019-02-02 03:23:49",
+            "updated_at": "2019-02-02 03:23:49"
         },
         {
             "id": "16",
             "name": "修改后台权限",
             "uri": "authority.update",
             "description": "修改后台权限",
-            "created_at": "3/4/2019 03:24:44",
-            "updated_at": "3/4/2019 03:24:44"
+            "created_at": "2019-02-02 03:24:44",
+            "updated_at": "2019-02-02 03:24:44"
         },
         {
             "id": "17",
             "name": "删除后台权限",
             "uri": "authority.destroy",
             "description": "删除后台权限",
-            "created_at": "3/4/2019 03:25:02",
-            "updated_at": "3/4/2019 03:25:02"
+            "created_at": "2019-02-02 03:25:02",
+            "updated_at": "2019-02-02 03:25:02"
         },
         {
             "id": "18",
             "name": "获取后台部门列表",
             "uri": "role.index",
             "description": "获取后台部门列表",
-            "created_at": "3/4/2019 03:27:47",
-            "updated_at": "3/4/2019 03:27:47"
+            "created_at": "2019-02-02 03:27:47",
+            "updated_at": "2019-02-02 03:27:47"
         },
         {
             "id": "19",
             "name": "添加后台部门",
             "uri": "role.store",
             "description": "添加后台部门",
-            "created_at": "3/4/2019 03:28:11",
-            "updated_at": "3/4/2019 03:28:11"
+            "created_at": "2019-02-02 03:28:11",
+            "updated_at": "2019-02-02 03:28:11"
         },
         {
             "id": "20",
             "name": "修改后台部门",
             "uri": "role.update",
             "description": "修改后台部门",
-            "created_at": "3/4/2019 03:28:35",
-            "updated_at": "3/4/2019 03:28:35"
+            "created_at": "2019-02-02 03:28:35",
+            "updated_at": "2019-02-02 03:28:35"
         },
         {
             "id": "21",
             "name": "删除后台部门",
             "uri": "role.destroy",
             "description": "删除后台部门",
-            "created_at": "3/4/2019 03:29:03",
-            "updated_at": "3/4/2019 03:29:03"
+            "created_at": "2019-02-02 03:29:03",
+            "updated_at": "2019-02-02 03:29:03"
         },
         {
             "id": "22",
             "name": "获取菜单所关联权限",
             "uri": "role.menu_authority",
             "description": "部门添加和修改时获取菜单所关联权限",
-            "created_at": "3/4/2019 08:05:31",
-            "updated_at": "3/4/2019 08:05:31"
+            "created_at": "2019-02-02 08:05:31",
+            "updated_at": "2019-02-02 08:05:31"
         }
     ]
 }

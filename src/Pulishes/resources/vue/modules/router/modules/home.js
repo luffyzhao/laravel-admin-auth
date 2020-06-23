@@ -135,5 +135,35 @@ export const home = [
             tags: false
         },
         component: () => import('../../views/authorities/authority/update')
-    }
+    },
+    {
+        path: 'Receiving/list',
+        name: 'receiving.list',
+        meta: {
+            title: '入库单管理',
+            cache: true,
+            tags: true
+        },
+        component: () => import('../../views/receiving/list/index')
+    },
+    {
+        path: 'Receiving/quality',
+        name: 'receiving.quality',
+        meta: {
+            title: '质检管理',
+            cache: true,
+            tags: true
+        },
+        component: () => import('../../views/receiving/quality/index')
+    },
+    {
+        path: 'Receiving/go_shelf',
+        name: 'receiving.go_shelf',
+        meta: {
+            title: '上架管理',
+            cache: true,
+            tags: true
+        },
+        component: () => import('../../views/receiving/go_shelf/index')
+    },
 ];

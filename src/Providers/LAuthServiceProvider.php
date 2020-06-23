@@ -17,10 +17,8 @@ class LAuthServiceProvider extends RouteServiceProvider
 
         $this->loadMigrationsFrom(__DIR__.'/../Pulishes/migrations');
 
-        if ($this->app->runningInConsole()) {
-            $this->publishes([
-                __DIR__.'/../Pulishes/resources/vue' => $this->app->resourcePath('vue'),
-            ], 'laravel-vue-admin');
-        }
+        $this->publishes([
+            __DIR__.'/../Pulishes/resources/vue' => $this->app->resourcePath('vue'),
+        ], 'laravel-vue-admin');
     }
 }
