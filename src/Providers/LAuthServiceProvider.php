@@ -13,7 +13,11 @@ class LAuthServiceProvider extends RouteServiceProvider
     public function boot(){
         parent::boot();
 
-        $this->loadRoutesFrom(__DIR__.'/../routes.php');
+        if(file_exists(base_path('routes/lauth.php'))){
+            $this->loadRoutesFrom(base_path('routes/lauth.php'));
+        }else{
+            $this->loadRoutesFrom(__DIR__.'/../routes.php');
+        }
 
         $this->loadMigrationsFrom(__DIR__.'/../Pulishes/migrations');
 
