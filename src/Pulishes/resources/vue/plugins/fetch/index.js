@@ -1,10 +1,9 @@
 import axios from 'axios'
 import {$cache} from '../cache'
 import $store from '../../modules/store/index'
-import {Message} from 'iview'
+import {Notice} from 'iview'
 import {baseUrl} from "../../libs/util";
 import FileSaver from 'file-saver';
-
 
 const instance = axios.create({
     baseURL: baseUrl(),
@@ -18,7 +17,6 @@ instance.download = (url, data, name = '_文件.xlsx') => {
         FileSaver.saveAs(res, name);
     });
 };
-
 // 添加请求拦截器
 instance.interceptors.request.use((config) => {
     // 在发送请求之前做些什么
@@ -41,24 +39,24 @@ instance.interceptors.response.use((response) => {
     // 对响应数据做点什么
     return response.data;
 }, (error) => {
-    if(!error.response){
-        Message.error('网络加载失败！');
-    }else if(error.response.status === 401){
-        Message.error(error.response.data.message);
-    }else if(error.response.status === 403){
-        Message.error(error.response.data.message);
-        $store.dispatch('auth/refresh');
-    }else if(error.response.status === 422){
-        Message.error('数据验证错误，请检查提交的数据!');
-    }else if(error.response.status === 404){
-        Message.error('数据不存在!');
-    }else if(error.response.status === 400){
-        Message.error(error.response.data.message);
-    }else if (Boolean(error.response.data.message)){
-        Message.error(error.response.data.message);
-    }else{
-        Message.error('服务器错误,请联系管理员!');
+    let desc = '';
+    if (!error.response) {
+        desc = '网络请求失败!';
+    } else {
+        switch (error.response.status) {
+            case 422:
+                Object.values(error.response.data.errors).forEach((item) => {
+                    desc += item.join('<br />') + '<br />';
+                });
+                break;
+            case 403:
+                $store.commit('auth/refresh');
+            default:
+                desc = error.response.data.message || '服务器错误,请联系管理员!';
+                break;
+        }
     }
+    Notice.error({title: '数据验证错误', desc, duration: 12});
     return Promise.reject(error.response);
 });
 
