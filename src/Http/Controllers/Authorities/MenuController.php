@@ -18,7 +18,7 @@ class MenuController extends Controller
     /**
      * @var Menu
      */
-    private $menu;
+    protected $menu;
 
     public function __construct(Menu $menu)
     {

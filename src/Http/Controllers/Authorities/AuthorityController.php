@@ -18,7 +18,7 @@ class AuthorityController extends Controller
     /**
      * @var Authority
      */
-    private $authority;
+    protected $authority;
 
     public function __construct(Authority $authority)
     {

@@ -20,7 +20,7 @@ class UserController extends Controller
     /**
      * @var User
      */
-    private $user;
+    protected $user;
 
     public function __construct(User $user)
     {

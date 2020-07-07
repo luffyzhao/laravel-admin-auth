@@ -19,7 +19,7 @@ class RoleController extends Controller
     /**
      * @var Role
      */
-    private $role;
+    protected $role;
 
     public function __construct(Role $role)
     {
