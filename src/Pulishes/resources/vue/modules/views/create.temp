@@ -1,0 +1,33 @@
+<template>
+    <IForm>
+        <Form :model="data" :label-width="100" :rules="ruleValidate" ref="formCreate">
+
+        </Form>
+        <div slot="footer">
+            <Button type="primary" icon="ios-add" @click="submit('formCreate')">提交</Button>
+            <Button type="warning" icon="md-log-out" @click="$router.go(-1)">返回</Button>
+        </div>
+    </IForm>
+</template>
+
+<script>
+    import IForm from "../../../components/content/form";
+    import contentDrawer from "../../../mixins/contentDrawer";
+    export default {
+        name: "create",
+        mixins: [contentDrawer],
+        components: {IForm},
+        data(){
+            return {}
+        },
+        methods: {
+            submit(data){
+
+            }
+        }
+    }
+</script>
+
+<style scoped>
+
+</style>
