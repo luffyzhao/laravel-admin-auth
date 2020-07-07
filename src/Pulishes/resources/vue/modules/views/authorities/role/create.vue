@@ -50,7 +50,7 @@
 </template>
 
 <script>
-    import contentDrawer from '../../../mixins/content-drawer'
+    import contentDrawer from '../../../mixins/contentDrawer'
     import Role from './role';
     import IForm from "../../../components/content/form";
 

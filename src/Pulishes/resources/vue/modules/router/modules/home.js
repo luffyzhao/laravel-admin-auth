@@ -135,5 +135,15 @@ export const home = [
             tags: false
         },
         component: () => import('../../views/authorities/authority/update')
+    },
+    {
+        path: 'Order/list',
+        name: 'order.list',
+        meta: {
+            title: '订单列表',
+            cache: true,
+            tags: true
+        },
+        component: () => import('../../views/order/list/index')
     }
 ];

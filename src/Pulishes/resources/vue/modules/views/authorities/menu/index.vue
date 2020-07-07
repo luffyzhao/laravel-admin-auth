@@ -6,7 +6,7 @@
 
 <script>
     import IContent from "../../../components/content/index";
-    import contentListPage from "../../../mixins/content-list-page";
+    import contentListPage from "../../../mixins/contentListPage";
     import render from './render'
 
     export default {

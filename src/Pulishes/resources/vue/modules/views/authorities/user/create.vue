@@ -71,7 +71,7 @@
 
 <script>
     import User from './user'
-    import contentDrawer from '../../../mixins/content-drawer'
+    import contentDrawer from '../../../mixins/contentDrawer'
     import IContent from "../../../components/content/index";
     import IForm from "../../../components/content/form";
 

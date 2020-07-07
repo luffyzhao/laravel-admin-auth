@@ -43,7 +43,7 @@
 </template>
 
 <script>
-    import FromSubmit from '../../mixins/from-submit'
+    import FromSubmit from '../../mixins/fromSubmit'
     import IForm from "../../components/content/form";
 
     export default {

@@ -27,7 +27,7 @@
 </template>
 
 <script>
-    import fromSubmit from '../../mixins/from-submit';
+    import fromSubmit from '../../mixins/fromSubmit';
 
     export default {
         name: "login",

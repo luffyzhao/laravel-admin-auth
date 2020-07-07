@@ -53,7 +53,7 @@
     import IContent from "../../../components/content/index";
     import ISearch from "../../../components/content/search";
     import ITable from "../../../components/content/table";
-    import contentListPage from "../../../mixins/content-list-page";
+    import contentListPage from "../../../mixins/contentListPage";
 
     export default {
         name: "index",

@@ -26,7 +26,7 @@
 </template>
 
 <script>
-    import contentDrawer from '../../../mixins/content-drawer'
+    import contentDrawer from '../../../mixins/contentDrawer'
     import Authority from './authority'
     import IForm from "../../../components/content/form";
 

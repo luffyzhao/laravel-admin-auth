@@ -1,4 +1,4 @@
-import fromSubmit from './from-submit'
+import fromSubmit from './fromSubmit'
 
 export default {
     mixins: [fromSubmit],

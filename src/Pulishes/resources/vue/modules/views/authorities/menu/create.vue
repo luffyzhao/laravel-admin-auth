@@ -33,7 +33,7 @@
 </template>
 
 <script>
-    import contentDrawer from '../../../mixins/content-drawer'
+    import contentDrawer from '../../../mixins/contentDrawer'
     import Menu from './menu';
     import IForm from "../../../components/content/form";
 
