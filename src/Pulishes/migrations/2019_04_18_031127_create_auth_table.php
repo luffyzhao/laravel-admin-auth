@@ -82,7 +82,7 @@ class CreateAuthTable extends Migration
             $table->string('name', 20)->comment('姓名');
             $table->char('phone', 11)->comment('电话号码');
             $table->string('email', 50)->comment('邮件');
-            $table->string('password', 60)->comment('密码');
+            $table->string('password', 100)->comment('密码');
             $table->date('birthday')->default(null)->nullable()->comment('生日');
             $table->date('entryday')->default(null)->nullable()->comment('入职日期');
             $table->enum('sex', ['man', 'women'])->default('man')->comment('性别');
