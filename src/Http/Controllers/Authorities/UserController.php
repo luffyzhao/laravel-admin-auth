@@ -63,7 +63,7 @@ class UserController extends Controller
     {
         return $this->response(
             $this->user->create($request->only([
-                'name', 'email', 'phone', 'birthday', 'sex', 'entryday', 'role_id', 'password', 'status'
+                'name', 'email', 'phone', 'role_id', 'password', 'status'
             ]))
         );
     }
@@ -112,7 +112,7 @@ class UserController extends Controller
     public function update(UserRequest $request, $id){
         return $this->response(
             $this->user->update($id, $request->only([
-                'name', 'email', 'phone', 'birthday', 'sex', 'entryday', 'role_id', 'password', 'roles', 'status'
+                'name', 'email', 'phone', 'role_id', 'password', 'roles', 'status'
             ]))
         );
     }

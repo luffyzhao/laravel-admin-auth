@@ -12,16 +12,10 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    protected $fillable = ['role_id', 'name', 'phone', 'email', 'password', 'birthday', 'entryday', 'sex', 'status'];
+    protected $fillable = ['role_id', 'name', 'phone', 'email', 'password', 'status'];
 
     protected $hidden = [
         'password'
-    ];
-
-    protected $attributes = [
-        'birthday' => '1970-01-01',
-        'entryday' => '1970-01-01',
-        'sex' => 'women',
     ];
 
     /**
@@ -50,6 +44,6 @@ class User extends Authenticatable
      * @author luffyzhao@vip.126.com
      */
     public function allowLogin(){
-        return $this->getAttribute('status') === 'on';
+        return $this->getAttribute('status') === 1;
     }
 }

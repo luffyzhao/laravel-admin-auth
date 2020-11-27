@@ -20,7 +20,7 @@ class UserStatusRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'status' => ['required', 'in:on,off']
+            'status' => ['required', 'in:0,1']
         ];
     }
 
