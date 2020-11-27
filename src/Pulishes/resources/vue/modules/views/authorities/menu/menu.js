@@ -3,7 +3,7 @@ export default {
         return {
             loading: true,
             data: {
-                parent_id : this.$route.query.id,
+                parent_id : this.props.id,
                 parent: {name: '顶级菜单'},
                 authorities: []
             },

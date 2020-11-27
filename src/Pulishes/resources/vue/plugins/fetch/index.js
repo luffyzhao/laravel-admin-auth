@@ -10,13 +10,6 @@ const instance = axios.create({
     timeout: 10000
 });
 
-instance.download = (url, data, name = '_文件.xlsx') => {
-    return instance.put(url, data ,{
-        responseType: 'blob'
-    }).then((res) => {
-        FileSaver.saveAs(res, name);
-    });
-};
 // 添加请求拦截器
 instance.interceptors.request.use((config) => {
     // 在发送请求之前做些什么
@@ -50,7 +43,7 @@ instance.interceptors.response.use((response) => {
                 });
                 break;
             case 403:
-                $store.commit('auth/refresh');
+                $store.dispatch('auth/afterLogout');
             default:
                 desc = error.response.data.message || '服务器错误,请联系管理员!';
                 break;

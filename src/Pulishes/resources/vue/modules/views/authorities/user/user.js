@@ -3,8 +3,7 @@ export default {
         return {
             loading: true,
             data: {
-                sex: 'women',
-                status: 'on'
+                status: 1
             },
             departments: {
                 data: []
@@ -29,7 +28,7 @@ export default {
                     {required: true, type: 'number', message: '所属部门不能为空', trigger: 'change'},
                 ],
                 status: [
-                    {required: true, type: 'enum', enum: ['off', 'on'], message: '用户状态不能为空'}
+                    {required: true, type: 'enum', enum: [0, 1], message: '用户状态不能为空'}
                 ],
                 sex: [
                     {required: true, type: 'enum', enum: ['women', 'man'], message: '性别状态不能为空'}

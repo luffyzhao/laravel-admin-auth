@@ -1,5 +1,5 @@
 <template>
-    <i-form :spin-show="loading" width="1200">
+    <IDrawer v-model="defaultValue" :loading="loading" :width="860" title="更新角色">
         <Form :model="data" :label-width="100" :rules="ruleValidate" ref="formUpdate">
 
             <Row>
@@ -43,22 +43,23 @@
         </Form>
         <div slot="footer">
             <Button type="primary" icon="ios-add" @click="submit('formUpdate')">提交</Button>
-            <Button type="warning" icon="md-log-out" @click="$router.go(-1)">返回</Button>
+            <Button type="warning" icon="md-log-out" @click="defaultValue = false">返回</Button>
         </div>
-    </i-form>
+    </IDrawer>
 </template>
 
 <script>
     import contentDrawer from '../../../mixins/contentDrawer'
     import Role from './role';
     import IForm from "../../../components/content/form";
+    import IDrawer from "../../../components/content/drawer";
 
     export default {
         name: "update",
-        components: {IForm},
+        components: {IDrawer, IForm},
         mixins: [contentDrawer, Role],
         mounted() {
-            this.$http.get(`authorities/role/${this.$route.query.id}/edit`).then((res) => {
+            this.$http.get(`authorities/role/${this.props.id}/edit`).then((res) => {
                 this.data = res.row
                 this.menus.data = res.menus
                 let data = [];
@@ -90,7 +91,7 @@
             submit(name) {
                 this.validate(name).then(() => {
                     this.loading = true;
-                    this.$http.put(`authorities/role/${this.$route.query.id}`, this.data).then(() => {
+                    this.$http.put(`authorities/role/${this.props.id}`, this.data).then(() => {
                         this.$Message.success('更新成功')
                     }).finally(() => {
                         this.loading = false;

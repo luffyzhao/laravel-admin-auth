@@ -1,6 +1,9 @@
 <template>
     <i-content :spinShow="loading" class="menu-content-wrapper">
         <Tree :data="data" :render="renderContent" class="tree"></Tree>
+
+        <component v-if="componentProps.value" :is="componentProps.view" v-model="componentProps.value" :props="componentProps.props"
+                   @input="getLists(page.current)"></component>
     </i-content>
 </template>
 
@@ -8,11 +11,13 @@
     import IContent from "../../../components/content/index";
     import contentListPage from "../../../mixins/contentListPage";
     import render from './render'
+    import ICreate from './create'
+    import IUpdate from './update'
 
     export default {
         name: "index",
         mixins: [contentListPage],
-        components: {IContent, render},
+        components: {IContent, render, ICreate, IUpdate},
         data() {
             return {
                 data: [{
@@ -43,9 +48,9 @@
             },
             append(data, com = 'create') {
                 if(com === 'create'){
-                    this.routerPush('authorities.menu.create', data)
+                    this.openComponent('ICreate', data)
                 }else{
-                    this.routerPush('authorities.menu.update', data)
+                    this.openComponent('IUpdate', data)
                 }
             },
             remove(data) {

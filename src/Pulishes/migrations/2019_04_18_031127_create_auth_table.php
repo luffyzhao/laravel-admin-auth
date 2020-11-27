@@ -83,7 +83,7 @@ class CreateAuthTable extends Migration
             $table->char('phone', 11)->comment('电话号码');
             $table->string('email', 50)->comment('邮件');
             $table->string('password', 100)->comment('密码');
-            $table->tinyint('status')->default(0)->comment('状态');
+            $table->tinyInteger('status')->default(0)->comment('状态');
             $table->timestamps();
 
             $table->foreign('role_id')->references('id')->on('roles')

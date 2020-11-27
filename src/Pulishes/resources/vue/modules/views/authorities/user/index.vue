@@ -6,7 +6,7 @@
             </FormItem>
             <FormItem :label-width="1">
                 <Button type="primary" icon="ios-search" @click="getLists" size="small">搜索</Button>
-                <Button type="success" icon="ios-add" @click="routerPush('authorities.user.create')" size="small">添加</Button>
+                <Button type="success" icon="ios-add" @click="openComponent('ICreate')" size="small">添加</Button>
             </FormItem>
         </i-search>
         <i-table :current="page.current" :total="page.total" :table="table" @on-page-change="pageChange">
@@ -22,30 +22,25 @@
             <template slot-scope="{ row, index }" slot="role">
                 <span>{{ row.role.name }}</span>
             </template>
-            <template slot-scope="{ row, index }" slot="sex">
-                <span>{{ row.sex }}</span>
-            </template>
-            <template slot-scope="{ row, index }" slot="birthday">
-                <span>{{ row.birthday }}</span>
-            </template>
-            <template slot-scope="{ row, index }" slot="entryday">
-                <span>{{ row.entryday }}</span>
-            </template>
             <template slot-scope="{ row, index }" slot="status">
                 <Poptip
-                        transfer
-                        confirm
-                        title="你确定要更改这个用户的状态吗？"
-                        @on-ok="status(row)">
-                    <Button :type="row.status === 'off' ? 'error' : 'success'" size="small">{{row.status === 'off' ?
+                    transfer
+                    confirm
+                    title="你确定要更改这个用户的状态吗？"
+                    @on-ok="status(row)">
+                    <Button :type="row.status === 0 ? 'error' : 'success'" size="small">{{row.status === 0 ?
                         '关闭' : '开启'}}
                     </Button>
                 </Poptip>
             </template>
             <template slot-scope="{ row, index }" slot="action">
-                <Button type="warning" size="small" @click="routerPush('authorities.user.update', {id: row.id})">编辑</Button>
+                <Button type="warning" size="small" @click="openComponent('IUpdate', {id: row.id})">编辑</Button>
             </template>
         </i-table>
+
+        <component v-if="componentProps.value" :is="componentProps.view" v-model="componentProps.value"
+                   :props="componentProps.props"
+                   @input="getLists(page.current)"></component>
     </i-content>
 </template>
 
@@ -54,11 +49,13 @@
     import ISearch from "../../../components/content/search";
     import ITable from "../../../components/content/table";
     import contentListPage from "../../../mixins/contentListPage";
+    import ICreate from './create'
+    import IUpdate from './update'
 
     export default {
         name: "index",
         mixins: [contentListPage],
-        components: {ITable, ISearch, IContent},
+        components: {ITable, ISearch, IContent, ICreate, IUpdate},
         data() {
             return {
                 search: {},
@@ -79,18 +76,6 @@
                         {
                             title: '所属部门',
                             slot: 'role'
-                        },
-                        {
-                            title: '性别',
-                            slot: 'sex'
-                        },
-                        {
-                            title: '生日',
-                            slot: 'birthday'
-                        },
-                        {
-                            title: '入职时间',
-                            slot: 'entryday'
                         },
                         {
                             title: '状态',

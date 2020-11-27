@@ -43,11 +43,6 @@ export default {
             commit('setLogin', false);
             commit('setMenus', []);
             router.push({name: 'login'})
-        },
-        refresh({commit, dispatch}){
-            $http.put('refresh').then((res) => {
-                commit('setLogin', res.data);
-            });
         }
     }
 }

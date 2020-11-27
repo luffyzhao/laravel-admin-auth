@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div style="flex: 1; overflow-y: auto;">
         <Menu :active-name="active.name" theme="dark" width="auto" v-if="!isCollapsed" @on-select="routerPush">
             <template v-for="(menu, index) in data">
                 <Submenu v-if="menu.children && menu.children.length > 0" :name="menu.link" :key="index">

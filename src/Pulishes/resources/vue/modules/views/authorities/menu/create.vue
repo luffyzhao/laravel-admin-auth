@@ -1,8 +1,8 @@
 <template>
-    <i-form :spin-show="loading">
+    <IDrawer v-model="defaultValue" :loading="loading" :width="860" title="创建菜单">
         <Form ref="formCreate" :model="data" :label-width="100" :rules="ruleValidate">
             <FormItem label="上级菜单">
-                <Input :value="$route.query.name" disabled></Input>
+                <Input :value="props.name" disabled></Input>
             </FormItem>
             <FormItem label="菜单名称" prop="name">
                 <Input v-model="data.name"></Input>
@@ -27,19 +27,20 @@
         </Form>
         <div slot="footer">
             <Button type="primary" icon="ios-add" @click="submit('formCreate')">提交</Button>
-            <Button type="warning" icon="md-log-out" @click="$router.go(-1)">返回</Button>
+            <Button type="warning" icon="md-log-out" @click="defaultValue = false">返回</Button>
         </div>
-    </i-form>
+    </IDrawer>
 </template>
 
 <script>
     import contentDrawer from '../../../mixins/contentDrawer'
     import Menu from './menu';
     import IForm from "../../../components/content/form";
+    import IDrawer from "../../../components/content/drawer";
 
     export default {
         name: "create",
-        components: {IForm},
+        components: {IDrawer, IForm},
         mixins: [contentDrawer, Menu],
         mounted(){
             this.$http.get(`authorities/menu/create`).then((res) => {
@@ -53,7 +54,7 @@
                 this.validate(name).then(() => {
                     this.loading = true;
                     this.$http.post(`authorities/menu`, this.data).then(() => {
-                        this.$store.dispatch('layout/remove', this.$route);
+                        this.defaultValue = false;
                     }).finally(() => {
                         this.loading = false;
                     });

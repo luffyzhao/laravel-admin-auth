@@ -6,7 +6,9 @@ let state = {
     // 活动的标签导航
     active: {},
     // 全部的标签导航
-    inactives: []
+    inactives: [],
+    // 左边是否收起
+    isCollapsed: false
 };
 
 let layout = $cache.get('$store/layout') || {};
@@ -29,9 +31,16 @@ export default {
          */
         active: state => {
             return state.active
+        },
+
+        isCollapsed: state => {
+            return state.isCollapsed
         }
     },
     mutations: {
+        chooseCollapsed(state, status){
+            state.isCollapsed = status;
+        },
         /**
          * 添加标签导航
          * @param router

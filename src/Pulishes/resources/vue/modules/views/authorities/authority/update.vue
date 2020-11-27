@@ -1,5 +1,5 @@
 <template>
-    <i-form :spin-show="loading">
+    <IDrawer v-model="defaultValue" :loading="loading" :width="500" title="更新权限">
         <Form ref="formUpdate" :model="data" :label-width="100" :rules="ruleValidate">
             <FormItem label="权限名称" prop="name">
                 <Input v-model="data.name"></Input>
@@ -20,22 +20,23 @@
         </Form>
         <div slot="footer">
             <Button type="primary" icon="ios-add" @click="submit('formUpdate')">提交</Button>
-            <Button type="warning" icon="md-log-out" @click="$router.go(-1)">返回</Button>
+            <Button type="warning" icon="md-log-out" @click="defaultValue = false">返回</Button>
         </div>
-    </i-form>
+    </IDrawer>
 </template>
 
 <script>
     import contentDrawer from '../../../mixins/contentDrawer'
     import Authority from './authority'
     import IForm from "../../../components/content/form";
+    import IDrawer from "../../../components/content/drawer";
 
     export default {
         name: "update",
-        components: {IForm},
+        components: {IDrawer, IForm},
         mixins: [contentDrawer, Authority],
         mounted() {
-            this.$http.get(`authorities/authority/${this.$route.query.id}/edit`).then((res) => {
+            this.$http.get(`authorities/authority/${this.props.id}/edit`).then((res) => {
                 this.data = res.row
                 this.menus.data = res.menus
                 let data = [];

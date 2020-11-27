@@ -1,11 +1,24 @@
 <template>
     <IContent :spinShow="loading">
-        <ISearch v-model="search"></ISearch>
+        <ISearch v-model="search">
+            <FormItem label="客户名称">
+                <RemoteSelect url="common/select/customer" v-model="search.customer_id" size="small"></RemoteSelect>
+            </FormItem>
+            <FormItem :label-width="1">
+                <Button type="primary" icon="ios-search" @click="getLists(1)" size="small">搜索</Button>
+            </FormItem>
+        </ISearch>
         <ITable :current="page.current" :table="table" :total="page.total" @on-page-change="pageChange">
-            <template slot-scope="{ row, index }" slot="attribute">
-                <Tag v-if="row.attribute === 0">良品货架</Tag>
+            <template slot-scope="{ row, index }" slot="customer">
+                <span>{{row.customer.name}}</span>
+            </template>
+            <template slot-scope="{ row, index }" slot="action">
+                <Button size="small" @click="openComponent('IUpdate', {id: row.id})">编辑</Button>
             </template>
         </ITable>
+
+        <component v-if="componentProps.value" :is="componentProps.view" v-model="componentProps.value" :props="componentProps.props"
+                   @input="getLists(page.current)"></component>
     </IContent>
 </template>
 
@@ -14,22 +27,51 @@
     import IContent from "../../../components/content/index";
     import ISearch from "../../../components/content/search";
     import ITable from "../../../components/content/table";
+    import contentDrawer from "../../../mixins/contentDrawer";
+    import IUpdate from "./update"
+    import RemoteSelect from "../../../components/form/remoteSelect";
 
     export default {
         name: "index",
-        components: {ITable, ISearch, IContent},
-        mixins: [contentListPage],
+        components: {RemoteSelect, ITable, ISearch, IContent, IUpdate},
+        mixins: [contentListPage, contentDrawer],
         data(){
             return {
                 table: {
                     columns: [
                         {
-                            title: '入库单号',
-                            key: 'code'
+                            title: '客户代码',
+                            slot: 'customer'
+                        },
+                        {
+                            title: '对接密钥',
+                            key: 'secret'
+                        },
+                        {
+                            title: '接收回调地址',
+                            key: 'callback'
+                        },
+                        {
+                            title: '操作',
+                            slot: 'action'
                         }
                     ]
                 },
                 search: {}
+            }
+        },
+        methods: {
+            getLists(page) {
+                this.loading = true;
+                this.$http.get(`customer/docking`, {
+                    params: Object.assign({}, this.search, {page: page})
+                }).then((data) => {
+                    this.table.data = data.data
+                    this.page.total = data.total
+                    this.page.current = data.current_page
+                }).finally(() => {
+                    this.loading = false;
+                });
             }
         }
     }

@@ -1,19 +1,22 @@
 <template>
-    <Drawer :title="title" v-model="defaultValue" :transfer="false" :mask-closable="false"
-            :width="width" draggable>
+    <Modal v-model="defaultValue" :transfer="false" :footer-hide="footerHide" :mask-closable="false"
+            :width="width">
+        <p slot="header" style="color:#f60;text-align:center">
+            <slot name="title"><span>{{title}}</span></slot>
+        </p>
         <div class="modal-body">
             <slot></slot>
         </div>
-        <div class="compon-drawer-footer">
+        <div slot="footer" v-if="!footerHide">
             <slot name="footer"></slot>
         </div>
         <Spin size="large" fix v-if="loading"></Spin>
-    </Drawer>
+    </Modal>
 </template>
 
 <script>
     export default {
-        name: "i-drawer",
+        name: "i-modal",
         props: {
             value: {
                 type: Boolean,
@@ -28,6 +31,10 @@
                 default: 720
             },
             loading: {
+                type: Boolean,
+                default: false
+            },
+            footerHide: {
                 type: Boolean,
                 default: false
             }
@@ -53,15 +60,13 @@
         display: flex;
         flex-direction: column;
     }
-
-    .compon-drawer-footer {
+    .compon-drawer-footer{
         border-top: 1px solid #e8e8e8;
         padding: 10px 16px;
         text-align: right;
         background: #fff;
     }
-
-    .compon-drawer-footer * {
-        text-align: left;
+    .compon-drawer-footer *{
+        text-align: right;
     }
 </style>

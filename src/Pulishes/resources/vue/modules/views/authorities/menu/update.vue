@@ -1,5 +1,5 @@
 <template>
-    <i-form :width="720" :spin-show="loading">
+    <IDrawer v-model="defaultValue" :loading="loading" :width="860" title="更新菜单">
         <Form ref="formUpdate" :model="data" :label-width="100" :rules="ruleValidate">
             <FormItem label="上级菜单">
                 <Input v-model="data.parent.name" disabled></Input>
@@ -27,21 +27,22 @@
         </Form>
         <div slot="footer">
             <Button type="primary" icon="ios-add" @click="submit('formUpdate')">提交</Button>
-            <Button type="warning" icon="md-log-out" @click="$router.go(-1)">返回</Button>
+            <Button type="warning" icon="md-log-out" @click="defaultValue = false">返回</Button>
         </div>
-    </i-form>
+    </IDrawer>
 </template>
 
 <script>
     import contentDrawer from '../../../mixins/contentDrawer'
     import Menu from './menu';
     import IForm from "../../../components/content/form";
+    import IDrawer from "../../../components/content/drawer";
 
 
     export default {
         name: "update",
         mixins: [contentDrawer, Menu],
-        components: {IForm},
+        components: {IDrawer, IForm},
         mounted(){
             this.$http.get(`authorities/menu/${this.$route.query.id}/edit`).then((res) => {
                 res.row.parent = res.row.parent || {name: '顶级菜单'};

@@ -1,28 +1,41 @@
 <template>
-    <IForm>
+    <IDrawer v-model="defaultValue" :loading="loading" :width="860" title="对接设置">
         <Form :model="data" :label-width="100" :rules="ruleValidate" ref="formCreate">
-
+            <FormItem label="详细地址" prop="address">
+                <Input v-model="data.secret" disabled></Input>
+            </FormItem>
         </Form>
         <div slot="footer">
             <Button type="primary" icon="ios-add" @click="submit('formCreate')">提交</Button>
-            <Button type="warning" icon="md-log-out" @click="$router.go(-1)">返回</Button>
+            <Button type="warning" icon="md-log-out" @click="defaultValue = false;">返回</Button>
         </div>
-    </IForm>
+    </IDrawer>
 </template>
 
 <script>
     import IForm from "../../../components/content/form";
     import contentDrawer from "../../../mixins/contentDrawer";
+    import IDrawer from "../../../components/content/drawer";
+    import IData from "./data";
+    import RemoteSelect from "../../../components/form/remoteSelect";
+
     export default {
         name: "create",
-        mixins: [contentDrawer],
-        components: {IForm},
-        data(){
+        mixins: [contentDrawer, IData],
+        components: {RemoteSelect, IForm, IDrawer},
+        data() {
             return {}
         },
         methods: {
-            submit(data){
-
+            submit(data) {
+                this.validate(data).then(() => {
+                    this.loading = true;
+                    this.$http.put(`customer/docking/${this.props.id}`, this.data).then(() => {
+                        this.getData();
+                    }).finally(() => {
+                        this.loading = false;
+                    });
+                });
             }
         }
     }

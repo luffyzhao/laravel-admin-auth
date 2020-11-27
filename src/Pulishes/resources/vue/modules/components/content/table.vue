@@ -1,6 +1,6 @@
 <template>
-    <div class="list-panel">
-        <Table :columns="table.columns" :data="table.data" ref="Table" :height="tableHeight">
+    <div class="list-panel" :id="uuid">
+        <Table :columns="columns" :data="table.data" ref="Table" border stripe :height="tableHeight" @on-selection-change="selectionChange">
             <slot></slot>
         </Table>
         <Page :current="current" :total="total" :page-size="pageSize" show-total @on-change="change" size="small"/>
@@ -8,6 +8,7 @@
 </template>
 
 <script>
+    import {uuid} from "../../../libs/util";
     export default {
         name: "i-table",
         props: {
@@ -28,27 +29,43 @@
                 }
             }
         },
-        data(){
+        computed: {
+            columns(){
+                return [{
+                    title: '序号',
+                    type: 'index',
+                    width: 60
+                },].concat(this.table.columns);
+            }
+        },
+        data() {
             return {
-                tableHeight: 0
+                tableHeight: 0,
+                uuid: uuid()
             }
         },
         mounted() {
-            this.tableHeight = document.getElementsByClassName('list-panel').item(0).clientHeight - 45;
-            for (let i in this.$scopedSlots) {
-                this.table.columns.forEach((val, key) => {
-                    if (val.slot === i || val.key === i) {
-                        val.slot = null;
-                        val.render = (h, {row, column, index}) => {
-                            return h('div', this.$scopedSlots[i]({row, column, index}))
-                        };
-                    }
-                });
-            }
+            this.$nextTick(() => {
+                this.tableHeight = document.getElementById(this.uuid).clientHeight - 45;
+                for (let i in this.$scopedSlots) {
+                    this.table.columns.forEach((val, key) => {
+                        if (val.slot === i || val.key === i) {
+                            val.slot = null;
+                            val.render = (h, {row, column, index}) => {
+                                return h('div', this.$scopedSlots[i]({row, column, index}))
+                            };
+                        }
+                    });
+                }
+            });
+
         },
         methods: {
             change(v) {
                 this.$emit('on-page-change', v);
+            },
+            selectionChange(v){
+                this.$emit('on-selection-change', v);
             }
         }
     }
