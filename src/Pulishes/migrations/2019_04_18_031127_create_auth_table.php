@@ -18,15 +18,16 @@ class CreateAuthTable extends Migration
             $table->increments('id');
             $table->string('name', 20)->comment('权限名称');
             $table->string('uri', 100)->unique()->comment('权限name');
-            $table->string('description', 255)->nullable()->default('')->comment('权限描述');
+            $table->string('description', 255)->nullable()->comment('权限描述');
             $table->timestamps();
         });
 
         Schema::create('menus', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('parent_id')->default(0)->comment('上级菜单');
-            $table->string('name', 20)->comment('菜单名称');
-            $table->string('url', 100)->comment('菜单URL');
+            $table->string('name', 20)->comment('菜单程度名称');
+            $table->string('title', 100)->comment('菜单标题');
+            $table->string('icon', 50)->nullable()->comment('菜单图标');
             $table->tinyInteger('sort', false, true)->comment('排序');
             $table->string('description', 255)->nullable()->default('')->comment('权限描述');
             $table->timestamps();
@@ -83,6 +84,8 @@ class CreateAuthTable extends Migration
             $table->char('phone', 11)->comment('电话号码');
             $table->string('email', 50)->comment('邮件');
             $table->string('password', 100)->comment('密码');
+            $table->string('remark')->nullable()->comment('用户说明');
+            $table->date('entry_date')->nullable()->comment('入职日期');
             $table->tinyInteger('status')->default(0)->comment('状态');
             $table->timestamps();
 

@@ -14,7 +14,7 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Auth\Middleware\Authenticate;
 
-class RBAC extends Authenticate
+class RBACMiddleware extends Authenticate
 {
     /**
      * Handle an incoming request.

@@ -11,15 +11,15 @@ namespace LAuth\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
-class Menu extends Model
+abstract class  Menu extends Model
 {
-    protected $fillable = ['parent_id', 'name', 'url', 'sort', 'description'];
+    protected $fillable = ['parent_id', 'title', 'name', 'icon', 'sort', 'description'];
 
     protected static function boot()
     {
         parent::boot();
         static::addGlobalScope('sort', function(Builder $builder) {
-            $builder->orderBy('sort');
+            $builder->orderBy('parent_id')->orderBy('sort');
         });
     }
 

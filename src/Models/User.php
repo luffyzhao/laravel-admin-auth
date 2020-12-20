@@ -10,7 +10,7 @@ namespace LAuth\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Authenticatable
+abstract class  User extends Authenticatable
 {
     protected $fillable = ['role_id', 'name', 'phone', 'email', 'password', 'status'];
 

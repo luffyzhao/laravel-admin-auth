@@ -10,7 +10,7 @@ namespace LAuth\Repositories;
 use Exception;
 use LTools\Repositories\RepositoryAbstract;
 
-class Menu extends RepositoryAbstract
+abstract class Menu extends RepositoryAbstract
 {
 
     /**

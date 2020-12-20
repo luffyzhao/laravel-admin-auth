@@ -10,29 +10,43 @@ namespace LAuth\Http\Controllers;
 
 use LAuth\Http\Requests\Auth\LoginRequest;
 use LAuth\Http\Requests\Auth\ProfileUpdateRequest;
+use LAuth\Repositories\Menu;
 use LAuth\Repositories\User;
 use Illuminate\Auth\AuthenticationException;
 
-class AuthController extends Controller
+abstract class AuthController extends Controller
 {
+    /**
+     * @return mixed
+     */
+    protected function getAuth()
+    {
+        return $this->getAuth();
+    }
+
     /**
      * login
      * @param LoginRequest $request
-     * @author luffyzhao@vip.126.com
      * @return \Illuminate\Http\JsonResponse
      * @throws AuthenticationException
+     * @author luffyzhao@vip.126.com
      */
-    public function login(LoginRequest $request)
+    public function login(LoginRequest $request, Menu $menu)
     {
-        $token = auth('api')->attempt($request->only([
+        $token = $this->getAuth()->attempt($request->only([
             'email', 'password'
         ]));
-        $user = auth('api')->user();
+        $user = $this->getAuth()->user();
         if (!$token || !$user->allowLogin()) {
             throw new AuthenticationException('用户不存在，或者用户被禁用');
         }
 
-        $menus = auth('api')->user()->role->cachedMenus();
+        if ($user->role_id === 0) {
+            $menus = $menu->get(['id', 'name', 'parent_id', 'title']);
+        } else {
+            $menus = $user->role->cachedMenus();
+        }
+
 
         return $this->response([
             'token' => (string)$token,
@@ -46,17 +60,17 @@ class AuthController extends Controller
      */
     public function logout()
     {
-        return $this->response(auth('api')->logout());
+        return $this->response($this->getAuth()->logout());
     }
 
     /**
      * refresh
-     * @author luffyzhao@vip.126.com
      * @return \Illuminate\Http\JsonResponse
+     * @author luffyzhao@vip.126.com
      */
     public function refresh()
     {
-        return $this->response((string)auth('api')->refresh());
+        return $this->response((string)$this->getAuth()->refresh());
     }
 
     /**
@@ -65,7 +79,7 @@ class AuthController extends Controller
      */
     public function profile()
     {
-        $user = auth('api')->user();
+        $user = $this->getAuth()->user();
         $user->load(['role']);
         return $this->response($user);
     }
@@ -74,17 +88,17 @@ class AuthController extends Controller
      * profileUpdate
      * @param User $user
      * @param ProfileUpdateRequest $request
-     * @author luffyzhao@vip.126.com
      * @return \Illuminate\Http\JsonResponse
      * @throws \Throwable
+     * @author luffyzhao@vip.126.com
      */
     public function profileUpdate(User $user, ProfileUpdateRequest $request)
     {
         return $this->response(
             $user->profileUpdate(
-                auth('api')->user(),
+                $this->getAuth()->user(),
                 $request->only([
-                    'phone', 'birthday', 'sex', 'password', 'password_confirmation'
+                    'phone'
                 ])
             )
         );

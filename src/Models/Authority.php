@@ -10,7 +10,7 @@ namespace LAuth\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Authority extends Model
+abstract class Authority extends Model
 {
     protected $fillable = ['name', 'uri', 'description'];
 

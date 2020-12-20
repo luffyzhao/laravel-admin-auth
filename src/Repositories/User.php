@@ -11,7 +11,7 @@ namespace LAuth\Repositories;
 use Illuminate\Database\Eloquent\Model;
 use LTools\Repositories\RepositoryAbstract;
 
-class User extends RepositoryAbstract
+abstract class User extends RepositoryAbstract
 {
     /**
      * @var \LAuth\Models\User|Model

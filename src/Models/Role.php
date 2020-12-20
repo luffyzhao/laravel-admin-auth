@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 
-class Role extends Model
+abstract class  Role extends Model
 {
     protected $fillable = ['name', 'description'];
 
@@ -48,8 +48,8 @@ class Role extends Model
     public static function clearCache()
     {
         if (Cache::getStore() instanceof TaggableStore) {
-            Cache::tags(Config::get('authorities.role_menus_table'))->flush();
-            Cache::tags(Config::get('authorities.role_authorities_table'))->flush();
+            Cache::tags(get_class(self) . Config::get('.authorities.role_menus_table'))->flush();
+            Cache::tags(get_class(self) . Config::get('.authorities.role_authorities_table'))->flush();
         }
         return true;
     }
@@ -64,42 +64,41 @@ class Role extends Model
         parent::boot();
         static::saved([static::class, 'clearCache']);
         static::deleted([static::class, 'clearCache']);
-        static::addGlobalScope('sort', function(Builder $builder) {
+        static::addGlobalScope('sort', function (Builder $builder) {
             $builder->orderByDesc('id');
         });
     }
 
 
-
     /**
      * 缓存用户组菜单
      * cachedMenus
-     * @author luffyzhao@vip.126.com
      * @return Collection
+     * @author luffyzhao@vip.126.com
      */
     public function cachedMenus(): Collection
     {
         $rolePrimaryKey = $this->primaryKey;
         $cacheKey = 'authorities:role_menus:' . $this->$rolePrimaryKey;
         if (Cache::getStore() instanceof TaggableStore) {
-            return Cache::tags(Config::get('authorities.role_menus_table'))->remember($cacheKey, Config::get('cache.ttl', 2678400), function () {
-                return $this->menus()->orderBy('sort')->get(['id', 'name', 'parent_id', 'url as link']);
+            return Cache::tags(get_class(self) . Config::get('.authorities.role_menus_table'))->remember($cacheKey, Config::get('cache.ttl', 2678400), function () {
+                return $this->menus()->orderBy('sort')->get(['id', 'name', 'parent_id', 'title']);
             });
-        } else return $this->menus()->orderBy('sort')->get(['id', 'name', 'parent_id', 'url as link']);
+        } else return $this->menus()->orderBy('sort')->get(['id', 'name', 'parent_id', 'title']);
     }
 
     /**
      * 缓存用户组权限
      * cachedAuthorities
-     * @author luffyzhao@vip.126.com
      * @return Collection
+     * @author luffyzhao@vip.126.com
      */
     public function cachedAuthorities(): Collection
     {
         $rolePrimaryKey = $this->primaryKey;
         $cacheKey = 'authorities:role_authorities:' . $this->$rolePrimaryKey;
         if (Cache::getStore() instanceof TaggableStore) {
-            return Cache::tags(Config::get('authorities.role_authorities_table'))->remember($cacheKey, Config::get('cache.ttl', 2678400), function () {
+            return Cache::tags(get_class(self) . Config::get('.authorities.role_authorities_table'))->remember($cacheKey, Config::get('cache.ttl', 2678400), function () {
                 return $this->authorities()->get();
             });
         } else return $this->authorities()->get();
@@ -109,8 +108,8 @@ class Role extends Model
      * 是否有这个权限
      * hasPermission
      * @param string $name
-     * @author luffyzhao@vip.126.com
      * @return bool
+     * @author luffyzhao@vip.126.com
      */
     public function hasPermission(string $name): bool
     {

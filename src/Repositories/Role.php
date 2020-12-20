@@ -10,7 +10,7 @@ namespace LAuth\Repositories;
 
 use LTools\Repositories\RepositoryAbstract;
 
-class Role extends RepositoryAbstract
+abstract class Role extends RepositoryAbstract
 {
     /**
      * @var \LAuth\Models\Role
