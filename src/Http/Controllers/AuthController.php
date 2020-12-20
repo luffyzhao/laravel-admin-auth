@@ -21,7 +21,7 @@ abstract class AuthController extends Controller
      */
     protected function getAuth()
     {
-        return $this->getAuth();
+        return auth('api');
     }
 
     /**
@@ -41,7 +41,7 @@ abstract class AuthController extends Controller
             throw new AuthenticationException('用户不存在，或者用户被禁用');
         }
 
-        if ($user->role_id === 0) {
+        if ($user->role_id === null) {
             $menus = $menu->get(['id', 'name', 'parent_id', 'title']);
         } else {
             $menus = $user->role->cachedMenus();

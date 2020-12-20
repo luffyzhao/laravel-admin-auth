@@ -25,7 +25,7 @@ class CreateAuthTable extends Migration
         Schema::create('menus', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('parent_id')->default(0)->comment('上级菜单');
-            $table->string('name', 20)->comment('菜单程度名称');
+            $table->string('name', 100)->comment('菜单程度名称');
             $table->string('title', 100)->comment('菜单标题');
             $table->string('icon', 50)->nullable()->comment('菜单图标');
             $table->tinyInteger('sort', false, true)->comment('排序');
