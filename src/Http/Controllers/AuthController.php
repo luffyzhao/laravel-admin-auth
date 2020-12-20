@@ -31,28 +31,28 @@ abstract class AuthController extends Controller
      * @throws AuthenticationException
      * @author luffyzhao@vip.126.com
      */
-    public function login(LoginRequest $request, Menu $menu)
-    {
-        $token = $this->getAuth()->attempt($request->only([
-            'email', 'password'
-        ]));
-        $user = $this->getAuth()->user();
-        if (!$token || !$user->allowLogin()) {
-            throw new AuthenticationException('用户不存在，或者用户被禁用');
-        }
-
-        if ($user->role_id === null) {
-            $menus = $menu->get(['id', 'name', 'parent_id', 'title']);
-        } else {
-            $menus = $user->role->cachedMenus();
-        }
-
-
-        return $this->response([
-            'token' => (string)$token,
-            'menus' => $menus
-        ]);
-    }
+//    public function login(LoginRequest $request, Menu $menu)
+//    {
+//        $token = $this->getAuth()->attempt($request->only([
+//            'email', 'password'
+//        ]));
+//        $user = $this->getAuth()->user();
+//        if (!$token || !$user->allowLogin()) {
+//            throw new AuthenticationException('用户不存在，或者用户被禁用');
+//        }
+//
+//        if ($user->role_id === null) {
+//            $menus = $menu->get(['id', 'name', 'parent_id', 'title']);
+//        } else {
+//            $menus = $user->role->cachedMenus();
+//        }
+//
+//
+//        return $this->response([
+//            'token' => (string)$token,
+//            'menus' => $menus
+//        ]);
+//    }
 
     /**
      * logout
