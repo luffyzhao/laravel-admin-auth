@@ -5,17 +5,17 @@
  * DateTime: 2019/3/26 11:19
  */
 
-namespace LAuth\Http\Controllers\Authorities;
+namespace App\Http\Controllers\__Module__\Authorities;
 
 
-use LAuth\Http\Controllers\Controller;
-use LAuth\Http\Requests\Authorities\UserRequest;
-use LAuth\Http\Requests\Authorities\UserStatusRequest;
-use LAuth\Http\Searchs\Authorities\UserSearch;
-use LAuth\Repositories\Role;
-use LAuth\Repositories\User;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Authorities\__Module__\__Module__UserRequest as UserRequest;
+use App\Http\Requests\Authorities\__Module__\__Module__UserStatusRequest as UserStatusRequest;
+use App\Http\Searchs\Authorities\__Module__\UserSearch;
+use App\Repositories\__Module__Role as Role;
+use App\Repositories\__Module__User as User;
 
-abstract class UserController extends Controller
+abstract class __Module__UserController extends Controller
 {
     /**
      * @var User

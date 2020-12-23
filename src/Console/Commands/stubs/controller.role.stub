@@ -5,16 +5,16 @@
  * DateTime: 2019/3/26 11:17
  */
 
-namespace LAuth\Http\Controllers\Authorities;
+namespace App\Http\Controllers\__Module__\Authorities;
 
 
-use LAuth\Http\Controllers\Controller;
-use LAuth\Http\Requests\Authorities\RoleRequest;
-use LAuth\Http\Searchs\Authorities\RoleSearch;
-use LAuth\Repositories\Menu;
-use LAuth\Repositories\Role;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Authorities\__Module__\__Module__RoleRequest as RoleRequest;
+use App\Http\Searchs\Authorities\__Module__\__Module__RoleSearch as RoleSearch;
+use App\Repositories\__Module__Menu as Menu;
+use App\Repositories\__Module__Role as Role;
 
-abstract class RoleController extends Controller
+abstract class __Module__RoleController extends Controller
 {
     /**
      * @var Role

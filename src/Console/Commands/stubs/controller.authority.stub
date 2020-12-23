@@ -5,15 +5,15 @@
  * DateTime: 2019/3/26 11:11
  */
 
-namespace LAuth\Http\Controllers\Authorities;
+namespace App\Http\Controllers\__Module__\Authorities;
 
-use LAuth\Http\Requests\Authorities\AuthoritiesRequest;
-use LAuth\Http\Searchs\Authorities\AuthoritySearch;
-use LAuth\Repositories\Authority;
-use LAuth\Http\Controllers\Controller;
-use LAuth\Repositories\Menu;
+use App\Http\Requests\__Module__\Authorities\__Module__AuthoritiesRequest as AuthoritiesRequest;
+use App\Http\Searchs\__Module__\Authorities\__Module__AuthoritySearch as AuthoritySearch;
+use App\Repositories\__Module__Authority as Authority;
+use App\Http\Controllers\Controller;
+use App\Repositories\__Module__Menu as Menu;
 
-abstract class AuthorityController extends Controller
+class __Module__AuthorityController extends Controller
 {
     /**
      * @var Authority

@@ -13,16 +13,8 @@ class LAuthServiceProvider extends RouteServiceProvider
     public function boot(){
         parent::boot();
 
-        if(file_exists(base_path('routes/lauth.php'))){
-            $this->loadRoutesFrom(base_path('routes/lauth.php'));
-        }else{
-            $this->loadRoutesFrom(__DIR__.'/../routes.php');
-        }
-
-        $this->loadMigrationsFrom(__DIR__.'/../Pulishes/migrations');
-
         $this->publishes([
-            __DIR__.'/../Pulishes/resources/vue' => $this->app->resourcePath('vue'),
+            __DIR__.'/../Pulishes/resources/vue' => $this->app->resourcePath('vue-test'),
         ], 'laravel-vue-admin');
     }
 }

@@ -1,0 +1,26 @@
+<?php
+/**
+ *
+ * Author: luffyzhao@vip.126.com
+ * DateTime: 2019/3/26 10:13
+ */
+
+namespace App\Models\__Module__;
+
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+
+class __Module__Authority extends Model
+{
+    protected $fillable = ['name', 'uri', 'description'];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @author: luffyzhao@vip.126.com
+     * @datetime: 2019/3/28 16:41
+     */
+    public function menus(){
+        return $this->belongsToMany(__Module__Menu::class, 'menu_authority', 'authority_id', 'menu_id');
+    }
+}

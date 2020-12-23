@@ -5,23 +5,23 @@
  * DateTime: 2019/4/3 16:12
  */
 
-namespace LAuth\Http\Controllers;
+namespace App\Http\Controllers\__Module__;
 
 
-use LAuth\Http\Requests\Auth\LoginRequest;
-use LAuth\Http\Requests\Auth\ProfileUpdateRequest;
-use LAuth\Repositories\Menu;
-use LAuth\Repositories\User;
+use App\Http\Requests\__Module__\Auth\__Module__LoginRequest as LoginRequest;
+use App\Http\Requests\__Module__\Auth\__Module__ProfileUpdateRequest as ProfileUpdateRequest;
+use App\Repositories\__Module__Menu as Menu;
+use App\Repositories\__Module__User as User;
 use Illuminate\Auth\AuthenticationException;
 
-abstract class AuthController extends Controller
+abstract class __Module__AuthController extends Controller
 {
     /**
      * @return mixed
      */
     protected function getAuth()
     {
-        return auth('api');
+        return auth('__Module__');
     }
 
     /**
@@ -31,28 +31,28 @@ abstract class AuthController extends Controller
      * @throws AuthenticationException
      * @author luffyzhao@vip.126.com
      */
-//    public function login(LoginRequest $request, Menu $menu)
-//    {
-//        $token = $this->getAuth()->attempt($request->only([
-//            'email', 'password'
-//        ]));
-//        $user = $this->getAuth()->user();
-//        if (!$token || !$user->allowLogin()) {
-//            throw new AuthenticationException('用户不存在，或者用户被禁用');
-//        }
-//
-//        if ($user->role_id === null) {
-//            $menus = $menu->get(['id', 'name', 'parent_id', 'title']);
-//        } else {
-//            $menus = $user->role->cachedMenus();
-//        }
-//
-//
-//        return $this->response([
-//            'token' => (string)$token,
-//            'menus' => $menus
-//        ]);
-//    }
+    public function login(LoginRequest $request, Menu $menu)
+    {
+        $token = $this->getAuth()->attempt($request->only([
+            'email', 'password'
+        ]));
+        $user = $this->getAuth()->user();
+        if (!$token || !$user->allowLogin()) {
+            throw new AuthenticationException('用户不存在，或者用户被禁用');
+        }
+
+        if ($user->role_id === null) {
+            $menus = $menu->get(['id', 'name', 'parent_id', 'title']);
+        } else {
+            $menus = $user->role->cachedMenus();
+        }
+
+
+        return $this->response([
+            'token' => (string)$token,
+            'menus' => $menus
+        ]);
+    }
 
     /**
      * logout
