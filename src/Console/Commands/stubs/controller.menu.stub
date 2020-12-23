@@ -7,13 +7,13 @@
 
 namespace App\Http\Controllers\__Module__\Authorities;
 
-use App\Http\Requests\Authorities\__Module__\__Module__MenuRequest as MenuRequest;
+use App\Http\Requests\Authorities\__Module__\MenuRequest;
 use App\Repositories\__Module__Authority as Authority;
 use App\Repositories\__Module__Menu as Menu;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-abstract class __Module__MenuController extends Controller
+class MenuController extends Controller
 {
     /**
      * @var Menu

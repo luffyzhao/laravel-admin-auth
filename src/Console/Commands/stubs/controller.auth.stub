@@ -8,13 +8,13 @@
 namespace App\Http\Controllers\__Module__;
 
 
-use App\Http\Requests\__Module__\Auth\__Module__LoginRequest as LoginRequest;
-use App\Http\Requests\__Module__\Auth\__Module__ProfileUpdateRequest as ProfileUpdateRequest;
+use App\Http\Requests\__Module__\Auth\LoginRequest;
+use App\Http\Requests\__Module__\Auth\ProfileUpdateRequest;
 use App\Repositories\__Module__Menu as Menu;
 use App\Repositories\__Module__User as User;
 use Illuminate\Auth\AuthenticationException;
 
-abstract class __Module__AuthController extends Controller
+class AuthController extends Controller
 {
     /**
      * @return mixed

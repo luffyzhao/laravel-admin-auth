@@ -8,6 +8,7 @@ use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Str;
+use Symfony\Component\Console\Input\InputArgument;
 
 class AuthMakeCommand extends Command
 {
@@ -43,13 +44,30 @@ class AuthMakeCommand extends Command
      */
     public function handle()
     {
-        if (parent::handle() === false && !$this->option('force')) {
-            return;
-        }
-
         $module = $this->argument('name');
 
+        $this->buildControllerClass($module);
 
+        $this->buildMigrationClass($module);
+
+    }
+
+
+    /**
+     * @param $module
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     */
+    protected function buildMigrationClass($module)
+    {
+        $stubs = $this->getMigrationStub($module);
+        foreach ($stubs as $key => $app) {
+            $path = database_path('migrations/') . $app;
+            if (!$this->files->exists(database_path('migrations/') . $app)) {
+                $stub = $this->getStrReplaceSearch($module, $this->files->get(__DIR__ . $key));
+
+                $this->putFile($path, $stub);
+            }
+        }
     }
 
 
@@ -63,20 +81,17 @@ class AuthMakeCommand extends Command
 
         foreach ($stubs as $key => $app) {
             if (!$this->alreadyExists($app)) {
-                $stub = $this->files->get($key);
+                $stub = $this->files->get(__DIR__ . $key);
 
-                foreach ($this->getStrReplaceSearch() as $search) {
-                    $stub = str_replace(
-                        $search,
-                        [Str::camel($module), Str::snake($module)],
-                        $stub
-                    );
-                }
-
-                $this->files->put(
-                    $this->getPath($this->qualifyClass($app)),
-                    $stub
+                $stub = $this->getStrReplaceSearch(
+                    $module,
+                    $this->files->get(__DIR__ . $key)
                 );
+
+
+                $path = $this->getPath($this->qualifyClass($app));
+
+                $this->putFile($path, $stub);
             }
         }
     }
@@ -88,13 +103,26 @@ class AuthMakeCommand extends Command
      */
     protected function getControllerStub(string $module)
     {
-        $camel = Str::camel($module);
+        $studly = Str::studly($module);
         return [
-            '/stubs/controller.auth.stub' => "\\App\Http\\Controllers\\{$camel}\\{$camel}AuthController",
-            '/stubs/controller.authority.stub' => "\\App\Http\\Controllers\\{$camel}\\Authorities\\{$camel}AuthorityController",
-            '/stubs/controller.menu.stub' => "\\App\Http\\Controllers\\{$camel}\\Authorities\\{$camel}MenuController",
-            '/stubs/controller.role.stub' => "\\App\Http\\Controllers\\{$camel}\\Authorities\\{$camel}RoleController",
-            '/stubs/controller.user.stub' => "\\App\Http\\Controllers\\{$camel}\\Authorities\\{$camel}UserController",
+            '/stubs/controller.auth.stub' => "\\App\Http\\Controllers\\{$studly}\\AuthController",
+            '/stubs/controller.authority.stub' => "\\App\Http\\Controllers\\{$studly}\\Authorities\\AuthorityController",
+            '/stubs/controller.menu.stub' => "\\App\Http\\Controllers\\{$studly}\\Authorities\\MenuController",
+            '/stubs/controller.role.stub' => "\\App\Http\\Controllers\\{$studly}\\Authorities\\RoleController",
+            '/stubs/controller.user.stub' => "\\App\Http\\Controllers\\{$studly}\\Authorities\\UserController",
+        ];
+    }
+
+    /**
+     * @param string $module
+     * @return array
+     */
+    protected function getMigrationStub(string $module)
+    {
+        $snake = Str::snake($module);
+
+        return [
+            '/stubs/migration.auth.stub' => date("Y_m_d_His_") . "create_{$snake}_rbac_auth_table.php",
         ];
     }
 
@@ -120,6 +148,18 @@ class AuthMakeCommand extends Command
         $name = Str::replaceFirst($this->rootNamespace(), '', $name);
 
         return $this->laravel['path'] . '/' . str_replace('\\', '/', $name) . '.php';
+    }
+
+    /**
+     * @param $path
+     * @param $stub
+     */
+    protected function putFile($path, $stub){
+        $this->makeDirectory($path);
+        $this->files->put(
+            $path,
+            $stub
+        );
     }
 
     /**
@@ -152,7 +192,7 @@ class AuthMakeCommand extends Command
      */
     protected function rootNamespace()
     {
-        return "";
+        return $this->laravel->getNamespace();
     }
 
     /**
@@ -169,11 +209,48 @@ class AuthMakeCommand extends Command
     /**
      * @return array
      */
-    protected function getStrReplaceSearch()
+    protected function getStrReplaceSearch($module, $stub)
+    {
+        $strReplaceArr = [
+            '__Module__' => Str::studly($module),
+            '__SModule__' => Str::snake($module)
+        ];
+
+        foreach ($strReplaceArr as $key => $value) {
+            $stub = str_replace(
+                $key,
+                $value,
+                $stub
+            );
+        }
+
+        return $stub;
+    }
+
+    /**
+     * Build the directory for the class if necessary.
+     *
+     * @param string $path
+     * @return string
+     */
+    protected function makeDirectory($path)
+    {
+        if (!$this->files->isDirectory(dirname($path))) {
+            $this->files->makeDirectory(dirname($path), 0777, true, true);
+        }
+
+        return $path;
+    }
+
+    /**
+     * Get the console command arguments.
+     *
+     * @return array
+     */
+    protected function getArguments()
     {
         return [
-            '__Module__',
-            '__SModule__'
+            ['name', InputArgument::REQUIRED, 'The name of the class'],
         ];
     }
 }

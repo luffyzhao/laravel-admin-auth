@@ -9,13 +9,13 @@ namespace App\Http\Controllers\__Module__\Authorities;
 
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Authorities\__Module__\__Module__UserRequest as UserRequest;
-use App\Http\Requests\Authorities\__Module__\__Module__UserStatusRequest as UserStatusRequest;
+use App\Http\Requests\Authorities\__Module__\UserRequest;
+use App\Http\Requests\Authorities\__Module__\UserStatusRequest;
 use App\Http\Searchs\Authorities\__Module__\UserSearch;
 use App\Repositories\__Module__Role as Role;
 use App\Repositories\__Module__User as User;
 
-abstract class __Module__UserController extends Controller
+class UserController extends Controller
 {
     /**
      * @var User

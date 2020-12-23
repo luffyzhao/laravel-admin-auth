@@ -7,13 +7,13 @@
 
 namespace App\Http\Controllers\__Module__\Authorities;
 
-use App\Http\Requests\__Module__\Authorities\__Module__AuthoritiesRequest as AuthoritiesRequest;
-use App\Http\Searchs\__Module__\Authorities\__Module__AuthoritySearch as AuthoritySearch;
+use App\Http\Requests\__Module__\Authorities\AuthoritiesRequest;
+use App\Http\Searchs\__Module__\Authorities\AuthoritySearch;
 use App\Repositories\__Module__Authority as Authority;
 use App\Http\Controllers\Controller;
 use App\Repositories\__Module__Menu as Menu;
 
-class __Module__AuthorityController extends Controller
+class AuthorityController extends Controller
 {
     /**
      * @var Authority

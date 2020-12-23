@@ -5,16 +5,26 @@ namespace LAuth\Providers;
 
 
 use App\Providers\RouteServiceProvider;
+use Illuminate\Cache\Console\ClearCommand as CacheClearCommand;
+use Illuminate\Console\Application as Artisan;
 use Illuminate\Support\Facades\Route;
+use LAuth\Console\Commands\AuthMakeCommand;
 
 class LAuthServiceProvider extends RouteServiceProvider
 {
 
     public function boot(){
         parent::boot();
+    }
 
-        $this->publishes([
-            __DIR__.'/../Pulishes/resources/vue' => $this->app->resourcePath('vue-test'),
-        ], 'laravel-vue-admin');
+    public function register(){
+        $this->app->singleton('command.make.auth-module', function ($app) {
+            return new AuthMakeCommand($app['files']);
+        });
+
+        $commands = ['AuthMakeCommand' => 'command.make.auth-module'];
+        Artisan::starting(function ($artisan) use ($commands) {
+            $artisan->resolveCommands($commands);
+        });
     }
 }
