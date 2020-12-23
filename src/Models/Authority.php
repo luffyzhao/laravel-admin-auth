@@ -9,6 +9,7 @@ namespace LAuth\Models;
 
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 abstract class Authority extends Model
 {
@@ -19,7 +20,8 @@ abstract class Authority extends Model
      * @author: luffyzhao@vip.126.com
      * @datetime: 2019/3/28 16:41
      */
-    public function menus(){
-        return $this->belongsToMany(Menu::class, 'menu_authority', 'authority_id', 'menu_id');
-    }
+    abstract public function menus(): BelongsToMany;
+//    public function menus(){
+//        return $this->belongsToMany(Menu::class, 'menu_authority', 'authority_id', 'menu_id');
+//    }
 }

@@ -13,7 +13,7 @@ use LAuth\Repositories\Menu;
 use LAuth\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class MenuController extends Controller
+abstract class MenuController extends Controller
 {
     /**
      * @var Menu

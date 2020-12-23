@@ -13,7 +13,7 @@ use LAuth\Repositories\Authority;
 use LAuth\Http\Controllers\Controller;
 use LAuth\Repositories\Menu;
 
-class AuthorityController extends Controller
+abstract class AuthorityController extends Controller
 {
     /**
      * @var Authority

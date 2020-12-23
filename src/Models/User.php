@@ -9,6 +9,7 @@ namespace LAuth\Models;
 
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 abstract class  User extends Authenticatable
 {
@@ -19,14 +20,10 @@ abstract class  User extends Authenticatable
     ];
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     * @author: luffyzhao@vip.126.com
-     * @datetime: 2019/3/28 19:51
+     * @return BelongsTo
+     * @author luffyzhao@vip.126.com
      */
-    public function role()
-    {
-        return $this->belongsTo(Role::class, 'role_id', 'id');
-    }
+    abstract public function role(): BelongsTo;
 
     /**
      * @param $value

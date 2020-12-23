@@ -14,7 +14,7 @@ use LAuth\Http\Searchs\Authorities\RoleSearch;
 use LAuth\Repositories\Menu;
 use LAuth\Repositories\Role;
 
-class RoleController extends Controller
+abstract class RoleController extends Controller
 {
     /**
      * @var Role

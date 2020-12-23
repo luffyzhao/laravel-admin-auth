@@ -12,6 +12,7 @@ use Illuminate\Cache\TaggableStore;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 
@@ -24,20 +25,14 @@ abstract class  Role extends Model
      * @author: luffyzhao@vip.126.com
      * @datetime: 2019/3/28 16:41
      */
-    public function authorities()
-    {
-        return $this->belongsToMany(Authority::class, 'role_authority', 'role_id', 'authority_id');
-    }
+    abstract public function authorities(): BelongsToMany;
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      * @author: luffyzhao@vip.126.com
      * @datetime: 2019/3/28 16:41
      */
-    public function menus()
-    {
-        return $this->belongsToMany(Menu::class, 'role_menu', 'role_id', 'menu_id');
-    }
+    abstract public function menus(): BelongsToMany;
 
 
     /**

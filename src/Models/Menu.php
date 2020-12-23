@@ -10,6 +10,7 @@ namespace LAuth\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 abstract class  Menu extends Model
 {
@@ -18,7 +19,7 @@ abstract class  Menu extends Model
     protected static function boot()
     {
         parent::boot();
-        static::addGlobalScope('sort', function(Builder $builder) {
+        static::addGlobalScope('sort', function (Builder $builder) {
             $builder->orderBy('parent_id')->orderBy('sort');
         });
     }
@@ -48,7 +49,5 @@ abstract class  Menu extends Model
      * @author: luffyzhao@vip.126.com
      * @datetime: 2019/3/28 16:41
      */
-    public function authorities(){
-        return $this->belongsToMany(Authority::class, 'menu_authority', 'menu_id', 'authority_id');
-    }
+    abstract public function authorities(): BelongsToMany;
 }

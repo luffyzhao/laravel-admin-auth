@@ -15,7 +15,7 @@ use LAuth\Http\Searchs\Authorities\UserSearch;
 use LAuth\Repositories\Role;
 use LAuth\Repositories\User;
 
-class UserController extends Controller
+abstract class UserController extends Controller
 {
     /**
      * @var User
