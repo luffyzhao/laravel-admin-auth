@@ -6,12 +6,12 @@
  * Time: 19:21
  */
 
-namespace App\Http\Requests\Authorities\__Module__;
+namespace App\Http\Requests\__Module__\Authorities;
 
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class __Module__AuthoritiesRequest extends FormRequest
+class AuthoritiesRequest extends FormRequest
 {
     /**
      * @return array

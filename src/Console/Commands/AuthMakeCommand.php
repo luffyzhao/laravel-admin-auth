@@ -46,10 +46,12 @@ class AuthMakeCommand extends Command
     {
         $module = $this->argument('name');
 
-        $this->buildControllerClass($module);
+        $this->buildClass($module);
 
         $this->buildMigrationClass($module);
 
+        $this->buildRouteClass($module);
+
     }
 
 
@@ -57,61 +59,88 @@ class AuthMakeCommand extends Command
      * @param $module
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
-    protected function buildMigrationClass($module)
+    protected function buildClass($module)
     {
-        $stubs = $this->getMigrationStub($module);
-        foreach ($stubs as $key => $app) {
-            $path = database_path('migrations/') . $app;
-            if (!$this->files->exists(database_path('migrations/') . $app)) {
-                $stub = $this->getStrReplaceSearch($module, $this->files->get(__DIR__ . $key));
-
-                $this->putFile($path, $stub);
-            }
-        }
-    }
-
-
-    /**
-     * @param $module
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
-     */
-    protected function buildControllerClass($module)
-    {
-        $stubs = $this->getControllerStub($module);
+        $stubs = $this->getStub($module);
 
         foreach ($stubs as $key => $app) {
             if (!$this->alreadyExists($app)) {
                 $stub = $this->files->get(__DIR__ . $key);
 
-                $stub = $this->getStrReplaceSearch(
-                    $module,
-                    $this->files->get(__DIR__ . $key)
+                foreach ($this->getStrReplaceSearch($module) as $search => $replace) {
+                    $stub = str_replace(
+                        $search,
+                        $replace,
+                        $stub
+                    );
+                }
+
+                $this->files->put(
+                    $this->getPath($this->qualifyClass($app)),
+                    $stub
                 );
-
-
-                $path = $this->getPath($this->qualifyClass($app));
-
-                $this->putFile($path, $stub);
             }
         }
     }
 
+    /**
+     * @param $module
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     * @author luffyzhao@vip.126.com
+     */
+    protected function buildMigrationClass($module)
+    {
+        $stubs = $this->getMigrationStub($module);
+        foreach ($stubs as $key => $app) {
+            $stub = $this->files->get(__DIR__ . $key);
+
+            foreach ($this->getStrReplaceSearch($module) as $search => $replace) {
+                $stub = str_replace(
+                    $search,
+                    $replace,
+                    $stub
+                );
+            }
+
+            $this->files->put(
+                $app,
+                $stub
+            );
+        }
+    }
+
+    protected function buildRouteClass($module)
+    {
+        $stubs = $this->getRouteStub($module);
+        foreach ($stubs as $key => $app) {
+            $stub = $this->files->get(__DIR__ . $key);
+
+            foreach ($this->getStrReplaceSearch($module) as $search => $replace) {
+                $stub = str_replace(
+                    $search,
+                    $replace,
+                    $stub
+                );
+            }
+
+            $this->files->put(
+                $app,
+                $stub
+            );
+        }
+    }
 
     /**
      * @param string $module
      * @return array
      */
-    protected function getControllerStub(string $module)
+    protected function getRouteStub(string $module)
     {
-        $studly = Str::studly($module);
         return [
-            '/stubs/controller.auth.stub' => "\\App\Http\\Controllers\\{$studly}\\AuthController",
-            '/stubs/controller.authority.stub' => "\\App\Http\\Controllers\\{$studly}\\Authorities\\AuthorityController",
-            '/stubs/controller.menu.stub' => "\\App\Http\\Controllers\\{$studly}\\Authorities\\MenuController",
-            '/stubs/controller.role.stub' => "\\App\Http\\Controllers\\{$studly}\\Authorities\\RoleController",
-            '/stubs/controller.user.stub' => "\\App\Http\\Controllers\\{$studly}\\Authorities\\UserController",
+            '/stubs/routes.stub' => base_path('routes/') . 'auth_' . Str::snake($module) . '.php'
         ];
     }
+
 
     /**
      * @param string $module
@@ -119,10 +148,46 @@ class AuthMakeCommand extends Command
      */
     protected function getMigrationStub(string $module)
     {
-        $snake = Str::snake($module);
-
         return [
-            '/stubs/migration.auth.stub' => date("Y_m_d_His_") . "create_{$snake}_rbac_auth_table.php",
+            '/stubs/migration.auth.stub' => database_path('migrations/') . '2020_12_24_000000_create_' . Str::snake($module) . '_auth_module_table.php'
+        ];
+    }
+
+    /**
+     * @param string $module
+     * @return array
+     */
+    protected function getStub(string $module)
+    {
+        $camel = Str::studly($module);
+        return [
+            '/stubs/controller.auth.stub' => "\\App\Http\\Controllers\\{$camel}\\AuthController",
+            '/stubs/controller.authority.stub' => "\\App\Http\\Controllers\\{$camel}\\Authorities\\AuthorityController",
+            '/stubs/controller.menu.stub' => "\\App\Http\\Controllers\\{$camel}\\Authorities\\MenuController",
+            '/stubs/controller.role.stub' => "\\App\Http\\Controllers\\{$camel}\\Authorities\\RoleController",
+            '/stubs/controller.user.stub' => "\\App\Http\\Controllers\\{$camel}\\Authorities\\UserController",
+
+            '/stubs/model.authority.stub' => "\\App\\Models\\{$camel}Authority",
+            '/stubs/model.menu.stub' => "\\App\\Models\\{$camel}Menu",
+            '/stubs/model.role.stub' => "\\App\\Models\\{$camel}Role",
+            '/stubs/model.user.stub' => "\\App\\Models\\{$camel}User",
+
+            '/stubs/request.authorities.stub' => "\\App\\Http\\Requests\\{$camel}\\Authorities\\AuthoritiesRequest",
+            '/stubs/request.login.stub' => "\\App\\Http\\Requests\\{$camel}\\Auth\\LoginRequest",
+            '/stubs/request.menu.stub' => "\\App\\Http\\Requests\\{$camel}\\Authorities\\MenuRequest",
+            '/stubs/request.profile.stub' => "\\App\\Http\\Requests\\{$camel}\\Auth\\ProfileUpdateRequest",
+            '/stubs/request.role.stub' => "\\App\\Http\\Requests\\{$camel}\\Authorities\\RoleRequest",
+            '/stubs/request.user.status.stub' => "\\App\\Http\\Requests\\{$camel}\\Authorities\\UserStatusRequest",
+            '/stubs/request.user.stub' => "\\App\\Http\\Requests\\{$camel}\\Authorities\\UserRequest",
+
+            '/stubs/search.authority.stub' => "\\App\\Http\\Searchs\\{$camel}\\Authorities\\AuthoritySearch",
+            '/stubs/search.role.stub' => "\\App\\Http\\Searchs\\{$camel}\\Authorities\\RoleSearch",
+            '/stubs/search.user.stub' => "\\App\\Http\\Searchs\\{$camel}\\Authorities\\UserSearch",
+
+            '/stubs/repositories.authority.stub' => "\\App\\Repositories\\{$camel}Authority",
+            '/stubs/repositories.menu.stub' => "\\App\\Repositories\\{$camel}Menu",
+            '/stubs/repositories.role.stub' => "\\App\\Repositories\\{$camel}Role",
+            '/stubs/repositories.user.stub' => "\\App\\Repositories\\{$camel}User",
         ];
     }
 
@@ -147,19 +212,9 @@ class AuthMakeCommand extends Command
     {
         $name = Str::replaceFirst($this->rootNamespace(), '', $name);
 
-        return $this->laravel['path'] . '/' . str_replace('\\', '/', $name) . '.php';
-    }
-
-    /**
-     * @param $path
-     * @param $stub
-     */
-    protected function putFile($path, $stub){
+        $path = $this->laravel['path'] . '/' . str_replace('\\', '/', $name) . '.php';
         $this->makeDirectory($path);
-        $this->files->put(
-            $path,
-            $stub
-        );
+        return $path;
     }
 
     /**
@@ -192,7 +247,7 @@ class AuthMakeCommand extends Command
      */
     protected function rootNamespace()
     {
-        return $this->laravel->getNamespace();
+        return "App";
     }
 
     /**
@@ -204,27 +259,6 @@ class AuthMakeCommand extends Command
     protected function getDefaultNamespace($rootNamespace)
     {
         return $rootNamespace;
-    }
-
-    /**
-     * @return array
-     */
-    protected function getStrReplaceSearch($module, $stub)
-    {
-        $strReplaceArr = [
-            '__Module__' => Str::studly($module),
-            '__SModule__' => Str::snake($module)
-        ];
-
-        foreach ($strReplaceArr as $key => $value) {
-            $stub = str_replace(
-                $key,
-                $value,
-                $stub
-            );
-        }
-
-        return $stub;
     }
 
     /**
@@ -240,6 +274,17 @@ class AuthMakeCommand extends Command
         }
 
         return $path;
+    }
+
+    /**
+     * @return array
+     */
+    protected function getStrReplaceSearch($module)
+    {
+        return [
+            '__Module__' => Str::studly($module),
+            '__SModule__' => Str::snake($module),
+        ];
     }
 
     /**

@@ -6,13 +6,13 @@
  * Time: 19:22
  */
 
-namespace LAuth\Http\Requests\Authorities\__Module__;
+namespace App\Http\Requests\__Module__\Authorities;
 
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Validator;
 
-class __Module__MenuRequest extends FormRequest
+class MenuRequest extends FormRequest
 {
     /**
      * @return array

@@ -5,12 +5,12 @@
  * DateTime: 2019/3/28 15:49
  */
 
-namespace App\Http\Searchs\Authorities\__Module__;
+namespace App\Http\Searchs\__Module__\Authorities;
 
 
 use LTools\Searchs\SearchAbstract;
 
-class __Module__RoleSearch extends SearchAbstract
+class RoleSearch extends SearchAbstract
 {
 
     /**

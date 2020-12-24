@@ -5,10 +5,9 @@ namespace LAuth\Providers;
 
 
 use App\Providers\RouteServiceProvider;
-use Illuminate\Cache\Console\ClearCommand as CacheClearCommand;
-use Illuminate\Console\Application as Artisan;
 use Illuminate\Support\Facades\Route;
 use LAuth\Console\Commands\AuthMakeCommand;
+use LAuth\Console\Commands\AuthSeederCommand;
 
 class LAuthServiceProvider extends RouteServiceProvider
 {
@@ -17,14 +16,16 @@ class LAuthServiceProvider extends RouteServiceProvider
         parent::boot();
     }
 
-    public function register(){
-        $this->app->singleton('command.make.auth-module', function ($app) {
+    public function register()
+    {
+        $this->app->singleton('luffyzhao.admin.auth', function ($app) {
             return new AuthMakeCommand($app['files']);
         });
+        $this->commands('luffyzhao.admin.auth');
 
-        $commands = ['AuthMakeCommand' => 'command.make.auth-module'];
-        Artisan::starting(function ($artisan) use ($commands) {
-            $artisan->resolveCommands($commands);
+        $this->app->singleton('luffyzhao.auth.seeder', function ($app) {
+            return new AuthSeederCommand($app['files']);
         });
+        $this->commands('luffyzhao.auth.seeder');
     }
 }

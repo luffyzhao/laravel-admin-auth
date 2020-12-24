@@ -13,6 +13,7 @@ use App\Http\Requests\__Module__\Auth\ProfileUpdateRequest;
 use App\Repositories\__Module__Menu as Menu;
 use App\Repositories\__Module__User as User;
 use Illuminate\Auth\AuthenticationException;
+use App\Http\Controllers\Controller;
 
 class AuthController extends Controller
 {
@@ -21,7 +22,7 @@ class AuthController extends Controller
      */
     protected function getAuth()
     {
-        return auth('__Module__');
+        return auth('__SModule__');
     }
 
     /**

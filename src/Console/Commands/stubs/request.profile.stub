@@ -6,13 +6,13 @@
  * Time: 15:54
  */
 
-namespace LAuth\Http\Requests\Auth\__Module__;
+namespace App\Http\Requests\__Module__\Auth;
 
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Validator;
 
-class __Module__ProfileUpdateRequest extends FormRequest
+class ProfileUpdateRequest extends FormRequest
 {
     /**
      * rules

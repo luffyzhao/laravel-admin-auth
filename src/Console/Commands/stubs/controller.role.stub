@@ -9,12 +9,12 @@ namespace App\Http\Controllers\__Module__\Authorities;
 
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Authorities\__Module__\RoleRequest;
-use App\Http\Searchs\Authorities\__Module__\RoleSearch;
+use App\Http\Requests\__Module__\Authorities\RoleRequest;
+use App\Http\Searchs\__Module__\Authorities\RoleSearch;
 use App\Repositories\__Module__Menu as Menu;
 use App\Repositories\__Module__Role as Role;
 
-abstract class RoleController extends Controller
+class RoleController extends Controller
 {
     /**
      * @var Role
