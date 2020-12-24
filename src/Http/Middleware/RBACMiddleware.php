@@ -42,8 +42,10 @@ class RBACMiddleware extends Authenticate
         }
 
         if ($request->route()->getName() !== null && $user) {
-            if (!($user->role_id !== null && $user->role && $user->role->hasPermission($request->route()->getName()))) {
-                throw new AuthorizationException('没有相关权限，请联系管理员添加');
+            if($user->role_id !== null){
+                if (!($user->role && $user->role->hasPermission($request->route()->getName()))) {
+                    throw new AuthorizationException('没有相关权限，请联系管理员添加');
+                }
             }
         }
 
