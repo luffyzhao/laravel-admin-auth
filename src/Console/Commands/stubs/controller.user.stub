@@ -14,6 +14,7 @@ use App\Http\Requests\__Module__\Authorities\UserStatusRequest;
 use App\Http\Searchs\__Module__\Authorities\UserSearch;
 use App\Repositories\__Module__Role as Role;
 use App\Repositories\__Module__User as User;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -36,7 +37,7 @@ class UserController extends Controller
     public function index(UserSearch $search)
     {
         return $this->response(
-            $this->user->paginate($search->toArray())
+            $this->user->paginate($search->toArray(), request()->input('per_page'))
         );
     }
 
@@ -62,9 +63,11 @@ class UserController extends Controller
     public function store(UserRequest $request)
     {
         return $this->response(
-            $this->user->create($request->only([
-                'name', 'email', 'phone', 'role_id', 'password', 'status'
-            ]))
+            DB::transaction(function () use ($request) {
+                $this->user->create($request->only([
+                    'name', 'email', 'phone', 'role_id', 'status', 'remark'
+                ]));
+            })
         );
     }
 
@@ -72,9 +75,9 @@ class UserController extends Controller
      * @param UserStatusRequest $request
      * @param $id
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Throwable
      * @author: luffyzhao@vip.126.com
      * @datetime: 2019/3/29 18:40
-     * @throws \Throwable
      */
     public function status(UserStatusRequest $request, $id)
     {
@@ -104,15 +107,16 @@ class UserController extends Controller
     /**
      * @param UserRequest $request
      * @param $id
-     * @author: luffyzhao@vip.126.com
-     * @datetime: 2019/3/29 19:39
      * @return \Illuminate\Http\JsonResponse
      * @throws \Throwable
+     * @author: luffyzhao@vip.126.com
+     * @datetime: 2019/3/29 19:39
      */
-    public function update(UserRequest $request, $id){
+    public function update(UserRequest $request, $id)
+    {
         return $this->response(
             $this->user->update($id, $request->only([
-                'name', 'email', 'phone', 'role_id', 'password', 'roles', 'status'
+                'email', 'phone', 'role_id', 'roles', 'status', 'remark'
             ]))
         );
     }

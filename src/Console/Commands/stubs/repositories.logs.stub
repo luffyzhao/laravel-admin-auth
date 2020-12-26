@@ -1,0 +1,35 @@
+<?php
+
+
+namespace App\Repositories;
+
+
+use App\Models\__Module__Log as Model;
+use LTools\Repositories\RepositoryAbstract;
+
+class __Module__Log extends RepositoryAbstract
+{
+    /**
+     * __Module__Log constructor.
+     * @param Model $model
+     */
+    public function __construct(Model $model)
+    {
+        $this->model = $model;
+    }
+
+    /**
+     * @param array $attributes
+     * @return bool|\Illuminate\Database\Eloquent\Model
+     */
+    public function create(array $attributes = [])
+    {
+        $attributes['user_id'] = auth('__SModule__')->user()->getKey();
+        $attributes['method'] = request()->getMethod();
+        if (null !== $qs = request()->getQueryString()) {
+            $qs = '?'.$qs;
+        }
+        $attributes['name'] = request()->getPathInfo() . $qs;
+        return parent::create($attributes);
+    }
+}

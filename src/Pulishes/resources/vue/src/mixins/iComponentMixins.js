@@ -1,5 +1,14 @@
 export default {
     name: 'IComponentMixins',
+    props: {
+        value: {
+            type: Boolean,
+            default: false
+        },
+        props: {
+            default: null
+        }
+    },
     data() {
         return {
             componentProps: {

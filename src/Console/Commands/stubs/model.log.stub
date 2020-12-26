@@ -1,0 +1,26 @@
+<?php
+
+
+namespace App\Models;
+
+
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+
+class __Module__Log extends Model
+{
+    protected $fillable = ['user_id', 'name', 'method'];
+
+    /**
+     * boot
+     * @author luffyzhao@vip.126.com
+     * @static
+     */
+    public static function boot()
+    {
+        parent::boot();
+        static::addGlobalScope('sort', function (Builder $builder) {
+            $builder->orderByDesc('id');
+        });
+    }
+}

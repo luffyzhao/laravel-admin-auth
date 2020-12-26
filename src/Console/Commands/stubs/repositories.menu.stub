@@ -8,6 +8,7 @@
 namespace App\Repositories;
 
 use Exception;
+use Illuminate\Database\Eloquent\Model;
 use LTools\Repositories\RepositoryAbstract;
 
 class __Module__Menu extends RepositoryAbstract
@@ -89,18 +90,22 @@ class __Module__Menu extends RepositoryAbstract
      */
     public function delete($id)
     {
-        $model = parent::find($id);
-        if ($model->children()->count()) {
-            throw new Exception('该菜单还有子菜单，不可删除！');
+        $collection = $this->model->newQuery()->whereIn('id', explode('|', $id))->get();
+        /** @var Model $model */
+        foreach ($collection as $model) {
+            if ($model->children()->count()) {
+                throw new Exception($model->getAttribute('title') . '该菜单还有子菜单，不可删除！');
+            }
+            $model->delete();
         }
-        return $model->delete();
+        return true;
     }
 
     /**
      * @param array $data
+     * @return \Illuminate\Database\Eloquent\Model
      * @author: luffyzhao@vip.126.com
      * @datetime: 2019/4/1 16:00
-     * @return \Illuminate\Database\Eloquent\Model
      */
     public function finds(array $data)
     {
@@ -111,8 +116,8 @@ class __Module__Menu extends RepositoryAbstract
     /**
      * editFind
      * @param $id
-     * @author luffyzhao@vip.126.com
      * @return \Illuminate\Support\Collection
+     * @author luffyzhao@vip.126.com
      */
     public function editFind($id)
     {

@@ -50,6 +50,6 @@ class __Module__Menu extends Model
      * @datetime: 2019/3/28 16:41
      */
     public function authorities(){
-        return $this->belongsToMany(__Module__Authority::class, 'menu_authority', 'menu_id', 'authority_id');
+        return $this->belongsToMany(__Module__Authority::class, '__SModule___menu_authority', 'menu_id', 'authority_id');
     }
 }

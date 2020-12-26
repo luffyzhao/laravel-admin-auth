@@ -3,7 +3,7 @@ import {$cache} from "./cache";
 import {Notice} from 'view-design'
 
 const instance = axios.create({
-    baseURL: '/erp/',
+    baseURL: '/manage/',
     timeout: 10000
 });
 
@@ -45,7 +45,7 @@ instance.interceptors.response.use((response) => {
                 });
                 break;
             case 403:
-                $store.commit('auth/refresh');
+                desc = "登录过期了";
             default:
                 desc = error.response.data.message || '服务器错误,请联系管理员!';
                 break;

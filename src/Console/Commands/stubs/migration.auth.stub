@@ -81,16 +81,23 @@ class Create__Module__AuthModuleTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('role_id')->nullable()->comment('所属角色');
             $table->string('name', 20)->comment('姓名');
-            $table->char('phone', 11)->comment('电话号码');
-            $table->string('email', 50)->comment('邮件');
+            $table->char('phone', 11)->comment('手机号码');
+            $table->string('email', 50)->unique()->comment('邮件');
             $table->string('password', 100)->comment('密码');
             $table->string('remark')->nullable()->comment('用户说明');
-            $table->date('entry_date')->nullable()->comment('入职日期');
             $table->tinyInteger('status')->default(0)->comment('状态');
             $table->timestamps();
 
             $table->foreign('role_id')->references('id')->on('__SModule___roles')
                 ->onUpdate('cascade')->onDelete('restrict');
+        });
+
+        Schema::create('__SModule___logs', function (Blueprint $table) {
+            $table->increments('id');
+            $table->unsignedInteger('user_id')->nullable()->comment('所属用户');
+            $table->string('name')->comment("path info");
+            $table->string('method', 10)->comment('请求类型');
+            $table->timestamps();
         });
 
         DB::statement("ALTER TABLE `__SModule___authorities` COMMENT '权限表'");
@@ -113,5 +120,6 @@ class Create__Module__AuthModuleTable extends Migration
         Schema::dropIfExists('__SModule___menu_authority');
         Schema::dropIfExists('__SModule___menus');
         Schema::dropIfExists('__SModule___authorities');
+        Schema::dropIfExists('__SModule___logs');
     }
 }

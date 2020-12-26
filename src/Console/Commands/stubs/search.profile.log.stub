@@ -1,0 +1,24 @@
+<?php
+
+
+namespace App\Http\Searchs\__Module__;
+
+
+use LTools\Searchs\SearchAbstract;
+
+class ProfileLogSearch extends SearchAbstract
+{
+
+    /**
+     * 关系映射.
+     *
+     * @return array
+     */
+    protected function relationship(): array
+    {
+        return [
+            'name' => '=',
+            'method' => '=',
+        ];
+    }
+}

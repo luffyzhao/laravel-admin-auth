@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class __Module__User extends Authenticatable
 {
-    protected $fillable = ['role_id', 'name', 'phone', 'email', 'password', 'status'];
+    protected $fillable = ['role_id', 'name', 'phone', 'email', 'password', 'status', 'remark'];
 
     protected $hidden = [
         'password'
@@ -27,6 +27,13 @@ class __Module__User extends Authenticatable
     public function role()
     {
         return $this->belongsTo(__Module__Role::class, 'role_id', 'id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function logs(){
+        return $this->hasMany(__Module__Log::class, 'user_id');
     }
 
     /**
@@ -47,4 +54,5 @@ class __Module__User extends Authenticatable
     public function allowLogin(){
         return $this->getAttribute('status') === 1;
     }
+
 }

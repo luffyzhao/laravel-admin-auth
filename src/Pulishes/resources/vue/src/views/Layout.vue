@@ -2,34 +2,43 @@
     <Layout class="layout">
         <Header>
             <div class="layout-logo"></div>
-            <Menu mode="horizontal" theme="dark" :active-name="topActiveName" class="layout-menu"
+            <Menu mode="horizontal" theme="dark" :active-name="topActiveName.name" class="layout-menu"
                   @on-select="topSelect">
                 <MenuItem v-for="(item, index) in allMenus" :name="item.name" :key="index">
-                    <Icon :type="item.icon"/>
+                    <Icon :type="item.icon" :size="20"/>
                     {{item.title}}
                 </MenuItem>
             </Menu>
 
             <div class="layout-header-right">
-                <Badge :count="1000" overflow-count="999" class="badge">
-                    <a href="/#/profile" class="demo-badge"></a>
+                <Badge :count="1000" overflow-count="2" class="badge">
+                    <Avatar icon="ios-person" shape="square" :size="30" />
                 </Badge>
             </div>
         </Header>
         <Layout>
             <transition name="left">
                 <Sider ref="side" v-show="leftMenus.length > 0" :width="150">
+                    <div class="menu-title">
+                        <Icon :type="topSelectMenu.icon" :size="20" style="margin-right: 10px;"/>
+                        {{topSelectMenu.title}}
+                    </div>
                     <Menu :active-name="$route.name" theme="dark" width="150" @on-select="push">
                         <template v-for="(item, index) in leftMenus">
-                            <MenuGroup v-if="item.children && item.children.length > 0" :title="item.title">
+                            <Submenu v-if="item.children && item.children.length > 0" :name="item.name" >
+                                <template slot="title">
+                                    <Icon :type="item.icon" :size="18"/>
+                                    {{item.title}}
+                                </template>
                                 <MenuItem v-for="(value, key) in item.children"
                                           :key="`${key}-${index}`"
                                           :to="{name: value.name}"
                                           :name="value.name">
                                     <span>{{value.title}}</span>
                                 </MenuItem>
-                            </MenuGroup>
-                            <MenuItem v-else :name="item.name">
+                            </Submenu>
+                            <MenuItem v-else :name="item.name" class="ivu-menu-item-left">
+                                <Icon :type="item.icon" :size="18"/>
                                 <span>{{item.title}}</span>
                             </MenuItem>
                         </template>
@@ -49,7 +58,9 @@
                     </Layout>
                     <Sider class="sider-right" :width="100">
                         <div class="sider-router">
-                            <div class="sider-router-title">常用菜单</div>
+                            <div class="sider-router-title">
+                                常用菜单
+                            </div>
                             <template v-for="(item, index) in usedRouter">
                                 <div v-if="index === 0" class="sider-router-tag sider-router-tag-active"
                                      @click="push(item.name)">
@@ -74,7 +85,8 @@
     export default {
         data() {
             return {
-                leftMenus: []
+                leftMenus: [],
+                topSelectMenu: {}
             }
         },
         computed: {
@@ -87,17 +99,19 @@
             },
             topActiveName() {
                 let name = this.$route.name;
-                return this.getPater(name).name;
-            },
+                return this.getPater(name);
+            }
         },
         mounted() {
             this.setLeftMenus(this.getPeer(this.$route.name));
+            this.topSelectMenu = this.topActiveName;
         },
         methods: {
             topSelect(name) {
                 let topSelectMenu = this.getForName(name);
                 let leftMenus = this.setTreeData(topSelectMenu.id);
                 this.setLeftMenus(leftMenus);
+                this.topSelectMenu = topSelectMenu;
                 if (leftMenus.length === 0) {
                     this.push(topSelectMenu.name);
                 }
@@ -148,19 +162,22 @@
 <style lang="less">
     .badge {
         position: relative;
-        top: 14px;
+        /*top: 14px;*/
+        height: 30px;
+        line-height: 30px;
     }
 
-    .demo-badge {
-        width: 42px;
-        height: 42px;
-        background: #eee;
-        border-radius: 6px;
-        display: inline-block;
+    .menu-title{
+        height: 40px;
+        border-bottom: 1px solid #5b6270;
+        border-top: 1px solid #5b6270;
+        padding-left: 15px;
+        line-height: 40px;
+        color: #fff0f6;
     }
 
     .layout-logo {
-        width: 180px;
+        width: 120px;
         height: 30px;
         background: #5b6270;
         border-radius: 3px;

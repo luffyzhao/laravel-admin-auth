@@ -24,7 +24,7 @@ class UserSearch extends SearchAbstract
             'name' => 'like',
             'email' => 'like',
             'phone' => 'like',
-            'department_id' => '=',
+            'role_id' => '=',
         ];
     }
 

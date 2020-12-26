@@ -1,11 +1,13 @@
 module.exports = {
 	outputDir: '../../public',
+    assetsDir: 'assets',
     productionSourceMap: false,
     pages: {
-        backstage: {
-            entry: 'src/backstage.js',
-            filename: 'backstage.html',
-            chunks: ['chunk-vendors', 'backstage']
+        manage: {
+            entry: 'src/manage.js',
+            filename: 'manage.html',
+            template: 'src/template/manage.html',
+            chunks: ['chunk-vendors', 'manage']
         }
     },
     configureWebpack: {

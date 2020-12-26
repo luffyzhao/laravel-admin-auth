@@ -63,7 +63,7 @@ class AuthSeederCommand
      */
     protected function getDatabaseArray($name): array
     {
-        $filename = __DIR__ . '/../../Pulishes/seeds/json/' . $name . '.json';
+        $filename = __DIR__ . '/../../Pulishes/seeds/' . $name . '/1.json';
         if (!$this->files->exists($filename)) {
             return [];
         }

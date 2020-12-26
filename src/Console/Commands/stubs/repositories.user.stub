@@ -8,22 +8,26 @@
 namespace App\Repositories;
 
 
-use Illuminate\Database\Eloquent\Model;
+use App\Mail\__Module__\UserPasswordMail;;
+
+use App\Models\__Module__User as Model;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 use LTools\Repositories\RepositoryAbstract;
 
 class __Module__User extends RepositoryAbstract
 {
     /**
-     * @var \App\Models\__Module__User|Model
+     * @var Model|Model
      */
     protected $model;
 
     /**
      * RepositoryAbstract constructor.
      *
-     * @param \App\Models\__Module__User $model
+     * @param Model $model
      */
-    public function __construct(\App\Models\__Module__User $model)
+    public function __construct(Model $model)
     {
         $this->model = $model;
     }
@@ -46,16 +50,36 @@ class __Module__User extends RepositoryAbstract
     }
 
     /**
+     * @param array $attributes
+     * @return bool|Model
+     */
+    public function create(array $attributes = [])
+    {
+        $attributes['password'] = Str::random(12);
+        $model = parent::create($attributes);
+
+        Mail::to($model->getAttribute('email'))->send(new UserPasswordMail($attributes));
+
+        return $model;
+    }
+
+    /**
      * @param $id
      * @param array $values
-     * @author: luffyzhao@vip.126.com
-     * @datetime: 2019/3/29 18:54
      * @return bool|Model
      * @throws \Throwable
+     * @author: luffyzhao@vip.126.com
+     * @datetime: 2019/3/29 18:54
      */
     public function status($id, array $values = [])
     {
-        return parent::update($id, $values);
+        /** @var Model $model */
+        $model = $this->find($id);
+        if ($model->getAttribute('role_id') === null) {
+            throw new \Exception("超级账号不能关闭");
+        }
+        $model->fillable(['status'])->fill($values)->saveOrFail();
+        return $model;
     }
 
     /**
@@ -76,17 +100,14 @@ class __Module__User extends RepositoryAbstract
 
     /**
      * profileUpdate
-     * @param \LAuth\Models\User $user
+     * @param Model $user
      * @param array $values
-     * @author luffyzhao@vip.126.com
      * @return bool
      * @throws \Throwable
+     * @author luffyzhao@vip.126.com
      */
-    public function profileUpdate(\LAuth\Models\User $user, array $values)
+    public function password(Model $user, array $values)
     {
-        if (empty($values['password'])) {
-            unset($values['password']);
-        }
         return $user->fill($values)->saveOrFail();
     }
 

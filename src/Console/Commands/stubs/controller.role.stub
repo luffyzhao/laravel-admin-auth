@@ -35,7 +35,7 @@ class RoleController extends Controller
     public function index(RoleSearch $search)
     {
         return $this->response(
-            $this->role->paginate($search->toArray())
+            $this->role->paginate($search->toArray(),  request()->input('per_page'))
         );
     }
 
@@ -48,7 +48,7 @@ class RoleController extends Controller
     public function create(Menu $menu)
     {
         return $this->response(
-            $menu->getWith(['id', 'name as title', 'parent_id'], ['authorities'])
+            $menu->getWith(['id', 'title', 'parent_id'], ['authorities'])
         );
     }
 
@@ -80,7 +80,7 @@ class RoleController extends Controller
     {
         return $this->response(
             [
-                'menus' => $menu->getWith(['id', 'name as title', 'parent_id'], ['authorities']),
+                'menus' => $menu->getWith(['id', 'title', 'parent_id'], ['authorities']),
                 'row' => $this->role->findEdit($id)
             ]
         );

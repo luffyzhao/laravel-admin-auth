@@ -10,6 +10,7 @@
                 <slot name="component"></slot>
             </div>
         </transition>
+        <Spin size="large" fix v-if="loading"></Spin>
     </div>
 </template>
 
@@ -24,6 +25,10 @@
                         value: false
                     }
                 }
+            },
+            loading: {
+                type: Boolean,
+                default: false
             }
         }
     }
@@ -32,6 +37,7 @@
 <style scoped>
     .i-content {
         height: 100%;
+        position: relative;
     }
 
     .transition {

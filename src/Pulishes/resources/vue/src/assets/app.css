@@ -5,6 +5,7 @@
 
 ::-webkit-scrollbar {
     width: 3px;
+    height: 3px;
     background-color: #F5F5F5;
 }
 
@@ -49,4 +50,14 @@
 
 .ivu-menu-vertical .ivu-menu-item-group-title{
     padding-left: 24px;
+}
+
+.ivu-m-8{
+    margin: 8px!important;
+}
+
+.h-100 .ivu-card-body{
+    height: calc(100% - 43px);
+    display: flex;
+    flex-direction: column;
 }

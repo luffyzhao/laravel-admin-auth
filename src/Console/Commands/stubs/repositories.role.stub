@@ -36,7 +36,7 @@ class __Module__Role extends RepositoryAbstract
     public function create(array $attributes = [])
     {
         /**
-         * @var $model \App\Models\Role
+         * @var $model \App\Models\__Module__Role
          */
         $model = parent::create($attributes);
         if (isset($attributes['authorities'])) {
@@ -59,7 +59,7 @@ class __Module__Role extends RepositoryAbstract
     public function update($id, array $values)
     {
         /**
-         * @var $model \App\Models\Role
+         * @var $model \App\Models\__Module__Role
          */
         $model = $this->find($id);
         $model->fill($values)->saveOrFail();

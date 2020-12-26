@@ -171,11 +171,12 @@ class AuthMakeCommand extends Command
             '/stubs/model.menu.stub' => "\\App\\Models\\{$camel}Menu",
             '/stubs/model.role.stub' => "\\App\\Models\\{$camel}Role",
             '/stubs/model.user.stub' => "\\App\\Models\\{$camel}User",
+            '/stubs/model.log.stub' => "\\App\\Models\\{$camel}Log",
 
             '/stubs/request.authorities.stub' => "\\App\\Http\\Requests\\{$camel}\\Authorities\\AuthoritiesRequest",
             '/stubs/request.login.stub' => "\\App\\Http\\Requests\\{$camel}\\Auth\\LoginRequest",
             '/stubs/request.menu.stub' => "\\App\\Http\\Requests\\{$camel}\\Authorities\\MenuRequest",
-            '/stubs/request.profile.stub' => "\\App\\Http\\Requests\\{$camel}\\Auth\\ProfileUpdateRequest",
+            '/stubs/request.update.password.stub' => "\\App\\Http\\Requests\\{$camel}\\Auth\\UpdatePasswordRequest",
             '/stubs/request.role.stub' => "\\App\\Http\\Requests\\{$camel}\\Authorities\\RoleRequest",
             '/stubs/request.user.status.stub' => "\\App\\Http\\Requests\\{$camel}\\Authorities\\UserStatusRequest",
             '/stubs/request.user.stub' => "\\App\\Http\\Requests\\{$camel}\\Authorities\\UserRequest",
@@ -183,11 +184,13 @@ class AuthMakeCommand extends Command
             '/stubs/search.authority.stub' => "\\App\\Http\\Searchs\\{$camel}\\Authorities\\AuthoritySearch",
             '/stubs/search.role.stub' => "\\App\\Http\\Searchs\\{$camel}\\Authorities\\RoleSearch",
             '/stubs/search.user.stub' => "\\App\\Http\\Searchs\\{$camel}\\Authorities\\UserSearch",
+            '/stubs/search.profile.log.stub' => "\\App\\Http\\Searchs\\{$camel}\\ProfileLogSearch",
 
             '/stubs/repositories.authority.stub' => "\\App\\Repositories\\{$camel}Authority",
             '/stubs/repositories.menu.stub' => "\\App\\Repositories\\{$camel}Menu",
             '/stubs/repositories.role.stub' => "\\App\\Repositories\\{$camel}Role",
             '/stubs/repositories.user.stub' => "\\App\\Repositories\\{$camel}User",
+            '/stubs/repositories.logs.stub' => "\\App\\Repositories\\{$camel}Log",
         ];
     }
 

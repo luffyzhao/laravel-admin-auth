@@ -9,7 +9,9 @@ namespace App\Http\Controllers\__Module__;
 
 
 use App\Http\Requests\__Module__\Auth\LoginRequest;
-use App\Http\Requests\__Module__\Auth\ProfileUpdateRequest;
+use App\Http\Requests\__Module__\Auth\UpdatePasswordRequest;
+use App\Http\Searchs\__Module__\ProfileLogSearch;
+use App\Models\__Module__User;
 use App\Repositories\__Module__Menu as Menu;
 use App\Repositories\__Module__User as User;
 use Illuminate\Auth\AuthenticationException;
@@ -18,7 +20,7 @@ use App\Http\Controllers\Controller;
 class AuthController extends Controller
 {
     /**
-     * @return mixed
+     * @return \Illuminate\Contracts\Auth\Factory|\Illuminate\Contracts\Auth\Guard|\Illuminate\Contracts\Auth\StatefulGuard
      */
     protected function getAuth()
     {
@@ -43,7 +45,7 @@ class AuthController extends Controller
         }
 
         if ($user->role_id === null) {
-            $menus = $menu->get(['id', 'name', 'parent_id', 'title']);
+            $menus = $menu->get(['id', 'name', 'parent_id', 'title', 'icon']);
         } else {
             $menus = $user->role->cachedMenus();
         }
@@ -86,20 +88,32 @@ class AuthController extends Controller
     }
 
     /**
+     * @param ProfileLogSearch $search
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function logs(ProfileLogSearch $search){
+        /** @var __Module__User $user */
+        $user = $this->getAuth()->user();
+        return $this->response(
+            $user->logs()->where($search->toArray())->paginate(request()->input('per_page'))
+        );
+    }
+
+    /**
      * profileUpdate
      * @param User $user
-     * @param ProfileUpdateRequest $request
+     * @param UpdatePasswordRequest $request
      * @return \Illuminate\Http\JsonResponse
      * @throws \Throwable
      * @author luffyzhao@vip.126.com
      */
-    public function profileUpdate(User $user, ProfileUpdateRequest $request)
+    public function password(User $user, UpdatePasswordRequest $request)
     {
         return $this->response(
-            $user->profileUpdate(
+            $user->password(
                 $this->getAuth()->user(),
                 $request->only([
-                    'phone'
+                    'password'
                 ])
             )
         );

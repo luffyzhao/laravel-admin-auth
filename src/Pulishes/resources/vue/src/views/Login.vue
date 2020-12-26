@@ -87,7 +87,6 @@
 </template>
 <script>
     import {mapMutations} from 'vuex'
-    import "../assets/login.css"
 
     export default {
         name: "login",
@@ -135,5 +134,6 @@
         }
     }
 </script>
-<style>
+<style scoped>
+    @import "../assets/login.css";
 </style>

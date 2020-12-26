@@ -12,6 +12,7 @@ use App\Repositories\__Module__Authority as Authority;
 use App\Repositories\__Module__Menu as Menu;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class MenuController extends Controller
 {
@@ -42,7 +43,8 @@ class MenuController extends Controller
      * @author: luffyzhao@vip.126.com
      * @datetime: 2019/4/1 14:59
      */
-    public function create(Authority $authority){
+    public function create(Authority $authority)
+    {
         return $this->response(
             $authority->get(['id as key', 'name as label'])
         );
@@ -59,7 +61,7 @@ class MenuController extends Controller
         return $this->response(
             $this->menu->create(
                 $request->only([
-                    'parent_id', 'name', 'url', 'sort', 'description', 'authorities'
+                    'parent_id', 'name', 'title', 'icon', 'sort', 'description', 'authorities'
                 ])
             )
         );
@@ -68,11 +70,12 @@ class MenuController extends Controller
     /**
      * @param Authority $authority
      * @param $id
+     * @return \Illuminate\Http\JsonResponse
      * @author: luffyzhao@vip.126.com
      * @datetime: 2019/4/1 15:14
-     * @return \Illuminate\Http\JsonResponse
      */
-    public function edit(Authority $authority, $id){
+    public function edit(Authority $authority, $id)
+    {
         return $this->response([
             'authorities' => $authority->get(['id as key', 'name as label']),
             'row' => $this->menu->editFind($id)
@@ -92,7 +95,7 @@ class MenuController extends Controller
     {
         return $this->response(
             $this->menu->update($id, $request->only([
-                'name', 'url', 'sort', 'description', 'authorities'
+                'name', 'title', 'icon', 'sort', 'description', 'authorities'
             ]))
         );
     }
@@ -100,13 +103,16 @@ class MenuController extends Controller
     /**
      * @param $id
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
      * @author: luffyzhao@vip.126.com
      * @datetime: 2019/3/27 19:21
-     * @throws \Exception
      */
-    public function destroy($id){
+    public function destroy($id)
+    {
         return $this->response(
-            $this->menu->delete($id)
+            DB::transaction(function () use ($id) {
+                $this->menu->delete($id);
+            })
         );
     }
 
@@ -117,7 +123,8 @@ class MenuController extends Controller
      * @author: luffyzhao@vip.126.com
      * @datetime: 2019/4/1 15:56
      */
-    public function authority(Request $request){
+    public function authority(Request $request)
+    {
         return $this->response(
             $this->menu->finds(
                 $request->only(['ids'])

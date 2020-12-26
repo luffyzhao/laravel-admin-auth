@@ -9,7 +9,7 @@ export default {
             page: {
                 current: 1,
                 total: 0,
-                per_page: 15
+                per_page: 30
             },
             table: {
                 columns: [],

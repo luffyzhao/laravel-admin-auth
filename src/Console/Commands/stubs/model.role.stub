@@ -27,7 +27,7 @@ class __Module__Role extends Model
      */
     public function authorities()
     {
-        return $this->belongsToMany(__Module__Authority::class, 'role_authority', 'role_id', 'authority_id');
+        return $this->belongsToMany(__Module__Authority::class, '__SModule___role_authority', 'role_id', 'authority_id');
     }
 
     /**
@@ -37,7 +37,7 @@ class __Module__Role extends Model
      */
     public function menus()
     {
-        return $this->belongsToMany(__Module__Menu::class, '__Module__role_menu', 'role_id', 'menu_id');
+        return $this->belongsToMany(__Module__Menu::class, '__SModule___role_menu', 'role_id', 'menu_id');
     }
 
 
@@ -83,9 +83,9 @@ class __Module__Role extends Model
         $cacheKey = 'authorities:role_menus:' . $this->$rolePrimaryKey;
         if (Cache::getStore() instanceof TaggableStore) {
             return Cache::tags(get_class(self) . Config::get('.authorities.role_menus_table'))->remember($cacheKey, Config::get('cache.ttl', 2678400), function () {
-                return $this->menus()->orderBy('sort')->get(['id', 'name', 'parent_id', 'title']);
+                return $this->menus()->orderBy('sort')->get(['id', 'name', 'parent_id', 'title', 'icon']);
             });
-        } else return $this->menus()->orderBy('sort')->get(['id', 'name', 'parent_id', 'title']);
+        } else return $this->menus()->orderBy('sort')->get(['id', 'name', 'parent_id', 'title'. 'icon']);
     }
 
     /**

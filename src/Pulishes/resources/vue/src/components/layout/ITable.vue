@@ -1,13 +1,12 @@
 <template>
     <div :id="uuid" class="list-panel">
-        <Table :columns="table.columns" size="small" :data="table.data" ref="Table" :height="tableHeight">
+        <Table :columns="table.columns" :loading="loading"  size="small" :data="table.data" ref="Table" :height="tableHeight" :stripe="true">
             <slot></slot>
         </Table>
         <Page :current="current" :total="total" :page-size="pageSize"
               show-total @on-change="change" size="small"
               show-elevator show-sizer @on-page-size-change="pageSizeChange"
-              :page-size-opts="[15, 50, 100, 200, 300]"
-        />
+              :page-size-opts="[15, 50, 100, 200, 300]"/>
     </div>
 </template>
 
@@ -32,6 +31,10 @@
                 default: () => {
                     return {columns: [], table: []}
                 }
+            },
+            loading: {
+                type: Boolean,
+                default: false
             }
         },
         data(){
@@ -80,6 +83,7 @@
     .list-panel {
         background-color: #fff;
         flex: 1;
+        position: relative;
     }
 
     .ivu-page {
