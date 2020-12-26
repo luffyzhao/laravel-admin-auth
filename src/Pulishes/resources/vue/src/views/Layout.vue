@@ -11,9 +11,15 @@
             </Menu>
 
             <div class="layout-header-right">
-                <Badge :count="1000" overflow-count="2" class="badge">
+                <Badge :count="1000" overflow-count="2" dot class="badge">
                     <Avatar icon="ios-person" shape="square" :size="30" />
                 </Badge>
+
+
+                <span @click="exit">
+                    <Avatar class="exit" icon="md-exit" shape="square" :size="30"/>
+                </span>
+
             </div>
         </Header>
         <Layout>
@@ -116,6 +122,11 @@
                     this.push(topSelectMenu.name);
                 }
             },
+            exit(){
+                this.$cache.clear();
+                window.location.reload();
+                // this.$router.push({name: 'login'})
+            },
             push(name) {
                 if (this.$route.name !== name) this.$router.push({name: name});
             },
@@ -184,7 +195,10 @@
         float: left;
         position: relative;
         top: 15px;
-        left: -40px;
+        left: -10px;
+    }
+    .ivu-layout-header{
+        padding: 0 20px;
     }
 
     .layout-footer-center {
@@ -267,5 +281,11 @@
 
     .sider-router-tag-active {
         background-color: #19be6b;
+    }
+
+    .exit{
+        margin-left: 10px;
+        background-color: #515a6e;
+        cursor: pointer;
     }
 </style>
