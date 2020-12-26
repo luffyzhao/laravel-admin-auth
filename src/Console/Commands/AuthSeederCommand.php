@@ -70,7 +70,7 @@ class AuthSeederCommand
         try {
             $json = file_get_contents($filename);
             $jsonArr = \GuzzleHttp\json_decode($json, true);
-            return $jsonArr['RECORDS'] ?? [];
+            return $jsonArr ?? [];
         } catch (\Exception $exception) {
             $this->output->error($exception->getMessage());
             $this->output->newLine();
