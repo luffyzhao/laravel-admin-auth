@@ -70,7 +70,7 @@
             submit(name) {
                 this.validate(name).then(() => {
                     this.loading = true;
-                    this.$http.post(`authorities/authority`,
+                    this.$http.put(`authorities/authority/${this.props.id}`,
                         Object.assign({}, this.data, {menus: this.checkedMenus})
                     ).then(() => {
                         this.defaultValue = false;
