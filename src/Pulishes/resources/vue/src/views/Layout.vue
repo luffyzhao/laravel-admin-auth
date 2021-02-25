@@ -2,9 +2,9 @@
     <Layout class="layout">
         <Header>
             <div class="layout-logo"></div>
-            <Menu mode="horizontal" theme="dark" :active-name="topActiveName.name" class="layout-menu"
-                  @on-select="topSelect">
-                <MenuItem v-for="(item, index) in allMenus" :name="item.name" :key="index">
+            <Menu mode="horizontal" theme="dark" class="layout-menu" :active-name="topSelect.id"
+                  @on-select="topChange">
+                <MenuItem v-for="(item, index) in topAllMenus" :name="item.id" :key="index">
                     <Icon :type="item.icon" :size="20"/>
                     {{item.title}}
                 </MenuItem>
@@ -12,7 +12,7 @@
 
             <div class="layout-header-right">
                 <Badge :count="1000" overflow-count="2" dot class="badge">
-                    <Avatar icon="ios-person" shape="square" :size="30" />
+                    <Avatar icon="ios-person" shape="square" :size="30"/>
                 </Badge>
 
 
@@ -22,16 +22,13 @@
 
             </div>
         </Header>
-        <Layout>
-            <transition name="left">
-                <Sider ref="side" v-show="leftMenus.length > 0" :width="150">
-                    <div class="menu-title">
-                        <Icon :type="topSelectMenu.icon" :size="20" style="margin-right: 10px;"/>
-                        {{topSelectMenu.title}}
-                    </div>
-                    <Menu :active-name="$route.name" theme="dark" width="150" @on-select="push">
-                        <template v-for="(item, index) in leftMenus">
-                            <Submenu v-if="item.children && item.children.length > 0" :name="item.name" >
+        <Layout class="ivu-layout-has-sider">
+            <template v-for="(treeItem, index) in treeData">
+                <Sider ref="side" :width="150"
+                       v-if="topSelect.id === treeItem.id && Boolean(treeItem.children) && treeItem.children.length > 0">
+                    <Menu :key="index" :active-name="$route.name" theme="dark" width="150" @on-select="push">
+                        <template v-for="(item, index) in treeItem.children">
+                            <Submenu v-if="item.children && item.children.length > 0" :name="item.name">
                                 <template slot="title">
                                     <Icon :type="item.icon" :size="18"/>
                                     {{item.title}}
@@ -50,7 +47,8 @@
                         </template>
                     </Menu>
                 </Sider>
-            </transition>
+            </template>
+
             <Layout>
                 <Layout class="content-layout">
                     <Layout>
@@ -91,8 +89,7 @@
     export default {
         data() {
             return {
-                leftMenus: [],
-                topSelectMenu: {}
+                topSelect: {}
             }
         },
         computed: {
@@ -100,51 +97,42 @@
                 menus: state => state.common.menus,
                 usedRouter: state => state.common.usedRouter
             }),
-            allMenus() {
+            topAllMenus() {
                 return this.menus.filter(val => val.parent_id === 0);
             },
-            topActiveName() {
-                let name = this.$route.name;
-                return this.getPater(name);
+            treeData() {
+                return this.setTreeData(0);
             }
         },
         mounted() {
-            this.setLeftMenus(this.getPeer(this.$route.name));
-            this.topSelectMenu = this.topActiveName;
+            this.$nextTick(() => {
+                let item = this.menus.find(val => val.name === this.$route.name);
+                let select = this.getFather(item);
+                if(Boolean(select.id)){
+                    this.topChange(select.id);
+                }else{
+                    this.topSelect = {};
+                }
+            });
         },
         methods: {
-            topSelect(name) {
-                let topSelectMenu = this.getForName(name);
-                let leftMenus = this.setTreeData(topSelectMenu.id);
-                this.setLeftMenus(leftMenus);
-                this.topSelectMenu = topSelectMenu;
-                if (leftMenus.length === 0) {
-                    this.push(topSelectMenu.name);
+            topChange(id) {
+                let item = this.treeData.find(val => val.id === id);
+                if (Boolean(item.id)) {
+                    this.topSelect = item;
+                    if(!Boolean(item.children)){
+                        this.push(item.name);
+                    }
+                } else {
+                    this.topSelect = {};
                 }
             },
-            exit(){
+            exit() {
                 this.$cache.clear();
                 window.location.reload();
-                // this.$router.push({name: 'login'})
             },
             push(name) {
                 if (this.$route.name !== name) this.$router.push({name: name});
-            },
-            getForName(name) {
-                return this.menus.find(val => val.name === name);
-            },
-            getPater(name) {
-                let topSelectMenu = this.getForName(name);
-                if (topSelectMenu.parent_id !== 0) {
-                    let _topSelectMenu = this.menus.find((val) => val.id === topSelectMenu.parent_id);
-                    return this.getPater(_topSelectMenu.name);
-                } else {
-                    return topSelectMenu;
-                }
-            },
-            getPeer(name) {
-                let topSelectMenu = this.getForName(name);
-                return topSelectMenu.parent_id !== 0 ? this.setTreeData(topSelectMenu.parent_id) : [];
             },
             setTreeData(parent_id) {
                 let cloneData = JSON.parse(JSON.stringify(this.menus))
@@ -158,14 +146,20 @@
                     return father['parent_id'] === parent_id
                 });
             },
-            setLeftMenus(arr) {
-                this.leftMenus = arr;
-            }
-        },
-        watch: {
-            "$route"(val) {
-                this.setLeftMenus(this.getPeer(val.name));
-            }
+            getFather(item) {
+                if (!Boolean(item.parent_id)) {
+                    return {};
+                }
+
+                let father = this.menus.find(val => val.id === item.parent_id);
+                if (!Boolean(father.id)) {
+                    return {};
+                }
+                if (father.parent_id === 0) {
+                    return father;
+                }
+                return this.getFather(father);
+            },
         }
     }
 </script>
@@ -178,7 +172,7 @@
         line-height: 30px;
     }
 
-    .menu-title{
+    .menu-title {
         height: 40px;
         border-bottom: 1px solid #5b6270;
         border-top: 1px solid #5b6270;
@@ -197,7 +191,8 @@
         top: 15px;
         left: -10px;
     }
-    .ivu-layout-header{
+
+    .ivu-layout-header {
         padding: 0 20px;
     }
 
@@ -283,7 +278,7 @@
         background-color: #19be6b;
     }
 
-    .exit{
+    .exit {
         margin-left: 10px;
         background-color: #515a6e;
         cursor: pointer;
