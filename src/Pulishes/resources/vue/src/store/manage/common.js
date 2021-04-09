@@ -20,10 +20,9 @@ let mutations = {
     setRouter(state, {name, meta}) {
         if (meta && meta.history) {
             let index = state.usedRouter.findIndex((val) => val.name === name);
-            if (index !== -1) {
-                state.usedRouter.splice(index, 1);
+            if (index === -1) {
+                state.usedRouter.unshift({name, meta});
             }
-            state.usedRouter.unshift({name, meta});
             $cache.set('$store/auth/usedRouter', state.usedRouter);
         }
     }

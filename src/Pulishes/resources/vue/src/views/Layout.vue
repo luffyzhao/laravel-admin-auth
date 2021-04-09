@@ -55,7 +55,9 @@
                         <Content class="content-body">
                             <div class="router-content-body">
                                 <transition name="slot-transition">
-                                    <router-view></router-view>
+                                    <keep-alive>
+                                        <router-view></router-view>
+                                    </keep-alive>
                                 </transition>
                             </div>
                         </Content>
@@ -66,7 +68,7 @@
                                 常用菜单
                             </div>
                             <template v-for="(item, index) in usedRouter">
-                                <div v-if="index === 0" class="sider-router-tag sider-router-tag-active"
+                                <div v-if="item.name === $route.name" class="sider-router-tag sider-router-tag-active"
                                      @click="push(item.name)">
                                     <span class="ivu-tag-text ivu-tag-color-white">{{item.meta.name}}</span>
                                 </div>
@@ -147,7 +149,7 @@
                 });
             },
             getFather(item) {
-                if (!Boolean(item.parent_id)) {
+                if (!Boolean(item) || !Boolean(item.parent_id)) {
                     return {};
                 }
 
