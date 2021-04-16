@@ -9,7 +9,7 @@ export default {
             page: {
                 current: 1,
                 total: 0,
-                per_page: 30
+                per_page: 50
             },
             table: {
                 columns: [],
@@ -31,18 +31,6 @@ export default {
             this.getLists(v.page);
         },
         getLists() {
-        },
-        _lists(url, page) {
-            this.loading = true;
-            this.$http.get(url, {
-                params: Object.assign({}, this.search, {page: page, per_page: this.page.per_page})
-            }).then((data) => {
-                this.table.data = data.data;
-                this.page.total = data.total;
-                this.page.current = data.current_page;
-            }).finally(() => {
-                this.loading = false;
-            });
         }
     }
 }

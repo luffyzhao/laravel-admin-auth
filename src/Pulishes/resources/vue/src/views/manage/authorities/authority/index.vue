@@ -27,16 +27,12 @@
                 <span>{{ row.description }}</span>
             </template>
             <template slot-scope="{ row, index }" slot="action">
-                <Button type="warning" size="small" @click="openComponent('IUpdate', {id: row.id})">
-                    编辑
-                </Button>
-                <Poptip
-                    transfer
-                    confirm
-                    title="你确定要删除这个权限吗？"
-                    @on-ok="remove(row)">
-                    <Button type="error" size="small">删除</Button>
-                </Poptip>
+                <ButtonGroup>
+                    <Button type="warning" size="small" @click="openComponent('IUpdate', {id: row.id})">
+                        编辑
+                    </Button>
+                    <Button type="error" size="small" @click="submitForRemove(row)">删除</Button>
+                </ButtonGroup>
             </template>
         </ITable>
 
@@ -89,12 +85,14 @@
                 this.loading = true;
                 this._lists(`authorities/authority`, page);
             },
-            remove(data) {
-                this.loading = true;
-                this.$http.delete(`authorities/authority/${data.id}`)
-                    .then(() => {
-                        this.getLists(this.page.current)
-                    });
+            submitForRemove(data) {
+                this._confirm().then(() => {
+                    this.loading = true;
+                    this.$http.delete(`authorities/authority/${data.id}`)
+                        .then(() => {
+                            this.getLists(this.page.current)
+                        });
+                });
             }
         }
     }

@@ -1,12 +1,13 @@
 <template>
     <div :id="uuid" class="list-panel">
-        <Table :columns="table.columns" :loading="loading"  size="small" :data="table.data" ref="Table" :height="tableHeight" :stripe="true">
+        <Table :columns="table.columns" :loading="loading" size="small" :data="table.data" ref="Table"
+               :height="tableHeight" :stripe="true">
             <slot></slot>
         </Table>
         <Page :current="current" :total="total" :page-size="pageSize"
               show-total @on-change="change" size="small"
               show-elevator show-sizer @on-page-size-change="pageSizeChange"
-              :page-size-opts="[15, 50, 100, 200, 300]"/>
+              :page-size-opts="[15, 30,50, 100, 200, 300]"/>
     </div>
 </template>
 
@@ -37,13 +38,13 @@
                 default: false
             }
         },
-        data(){
+        data() {
             return {
                 tableHeight: 0
             }
         },
         computed: {
-            uuid(){
+            uuid() {
                 return getRandomStr(12);
             }
         },
@@ -69,11 +70,14 @@
                     per_page: this.pageSize
                 });
             },
-            pageSizeChange(pageSize){
+            pageSizeChange(pageSize) {
                 this.$emit('on-page-change', {
                     page: this.current,
                     per_page: pageSize
                 });
+            },
+            getSelection() {
+                return this.$refs.Table.getSelection();
             }
         }
     }
