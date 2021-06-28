@@ -1,5 +1,6 @@
 import {$cache} from '../../plugins/cache';
-import router from "../../router/manage";
+import router from "../../router/index";
+
 
 let state = {
     token: null,

@@ -3,7 +3,6 @@ import {$cache} from "./cache";
 import {Notice} from 'view-design'
 
 const instance = axios.create({
-    baseURL: '/manage/',
     timeout: 10000
 });
 
@@ -57,7 +56,8 @@ instance.interceptors.response.use((response) => {
 
 
 export default {
-    install(Vue) {
+    install(Vue, options) {
+        instance.defaults = Object.assign({} , instance.defaults, options);
         Vue.prototype.$http = instance;
         Vue.http = instance;
     }
