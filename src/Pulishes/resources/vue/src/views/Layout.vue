@@ -14,8 +14,8 @@
                         {{item.title}}
                     </template>
                     <MenuItem v-for="(val, key) in item.children" :name="val.name" :key="val.id" v-if="val.children.length === 0">{{val.title}}</MenuItem>
-                    <MenuGroup :title="item.title" v-else>
-                        <MenuItem v-for="(value, k) in val.children" :name="value.name" :key="value.id">{{item.title}}</MenuItem>
+                    <MenuGroup :title="val.title" v-else>
+                        <MenuItem v-for="(value, k) in val.children" :name="value.name" :key="value.id">{{value.title}}</MenuItem>
                     </MenuGroup>
                 </Submenu>
             </Menu>
