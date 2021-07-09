@@ -1,5 +1,5 @@
 import {common} from './common'
 
-export const index = [
+export default {
     common
-];
+}
