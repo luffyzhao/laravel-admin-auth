@@ -3,7 +3,7 @@
 </template>
 
 <script>
-    import IContent from "../../../components/layout/IContent";
+    import IContent from "../../components/layout/IContent";
     export default {
         name: "layout-404",
         components: {IContent}

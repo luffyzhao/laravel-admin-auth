@@ -5,9 +5,9 @@ module.exports = {
     pages: {
         manage: {
             entry: 'src/manage.js',
-            filename: 'manage.html',
+            filename: '../resources/views/manage.blade.php',
             template: 'src/template/manage.html',
-            chunks: ['chunk-vendors', 'manage']
+            chunks: ['chunk-vendors', 'chunk-common', 'manage']
         }
     },
     configureWebpack: {

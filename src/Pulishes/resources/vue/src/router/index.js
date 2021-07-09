@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import {routes} from './manage/routes'
 import $common from '../store/index';
 
 
@@ -16,22 +17,7 @@ let father = {
     ]
 };
 
-const routes = [
-    {
-        path: '/login',
-        name: 'login',
-        component: () => import('../views/Login.vue')
-    },
-    {
-        path: '/404',
-        name: '404',
-        component: () => import('../views/error/404.vue'),
-    }
-];
-
-
 Vue.use(VueRouter);
-
 
 // 解决报错
 const originalPush = VueRouter.prototype.push

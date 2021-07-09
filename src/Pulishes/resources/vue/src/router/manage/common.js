@@ -1,4 +1,5 @@
 export const common = [
+
     {
         path: 'home',
         name: 'home',
