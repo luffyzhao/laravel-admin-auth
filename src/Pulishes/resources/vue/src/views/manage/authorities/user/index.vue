@@ -7,7 +7,7 @@
             </FormItem>
             <FormItem :label-width="1">
                 <ButtonGroup>
-                    <Button type="primary" icon="ios-search" size="small">搜索</Button>
+                    <Button type="primary" icon="ios-search" size="small" @click="getLists(1)">搜索</Button>
                     <Button type="success" icon="ios-add" size="small" @click="openComponent(`ICreate`)">添加</Button>
                 </ButtonGroup>
             </FormItem>
