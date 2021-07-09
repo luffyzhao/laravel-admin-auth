@@ -15,7 +15,8 @@
         "illuminate/validation": ">=5",
         "illuminate/contracts": ">=5",
         "illuminate/auth": ">=5",
-        "symfony/console": ">=5.2"
+        "symfony/console": ">=5.2",
+        "mews/captcha": "^3.2"
     },
     "autoload": {
         "psr-4": {
@@ -25,7 +26,8 @@
     "extra": {
         "laravel": {
             "providers": [
-                "LAuth\\Providers\\LAuthServiceProvider"
+                "LAuth\\Providers\\LAuthServiceProvider",
+                "Mews\\Captcha\\CaptchaServiceProvider"
             ]
         }
     }

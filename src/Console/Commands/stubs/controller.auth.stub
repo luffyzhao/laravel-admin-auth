@@ -36,6 +36,10 @@ class AuthController extends Controller
      */
     public function login(LoginRequest $request, Menu $menu)
     {
+        if(!captcha_api_check($request->get('captcha'), $request->get('key')))
+        {
+            throw new AuthenticationException('验证码错误');
+        }
         $token = $this->getAuth()->attempt($request->only([
             'email', 'password'
         ]));
