@@ -4,50 +4,32 @@
             <div class="layout-logo"></div>
             <Menu mode="horizontal" theme="dark" class="layout-menu" :active-name="topSelect.id"
                   @on-select="topChange">
-                <MenuItem v-for="(item, index) in topAllMenus" :name="item.id" :key="index">
+                <MenuItem v-for="(item, index) in treeData" :name="item.name" :key="item.id" v-if="item.children.length === 0">
                     <Icon :type="item.icon" :size="20"/>
                     {{item.title}}
                 </MenuItem>
+                <Submenu :name="item.name" :key="index" v-else>
+                    <template slot="title">
+                        <Icon type="ios-stats" />
+                        {{item.title}}
+                    </template>
+                    <MenuItem v-for="(val, key) in item.children" :name="val.name" :key="val.id" v-if="val.children.length === 0">{{val.title}}</MenuItem>
+                    <MenuGroup :title="item.title" v-else>
+                        <MenuItem v-for="(value, k) in val.children" :name="value.name" :key="value.id">{{item.title}}</MenuItem>
+                    </MenuGroup>
+                </Submenu>
             </Menu>
 
             <div class="layout-header-right">
                 <Badge :count="1000" overflow-count="2" dot class="badge">
                     <Avatar icon="ios-person" shape="square" :size="30"/>
                 </Badge>
-
-
                 <span @click="exit">
                     <Avatar class="exit" icon="md-exit" shape="square" :size="30"/>
                 </span>
-
             </div>
         </Header>
         <Layout class="ivu-layout-has-sider">
-            <template v-for="(treeItem, index) in treeData">
-                <Sider ref="side" :width="150"
-                       v-if="topSelect.id === treeItem.id && Boolean(treeItem.children) && treeItem.children.length > 0">
-                    <Menu :key="index" :active-name="$route.name" theme="dark" width="150" @on-select="push">
-                        <template v-for="(item, index) in treeItem.children">
-                            <Submenu v-if="item.children && item.children.length > 0" :name="item.name">
-                                <template slot="title">
-                                    <Icon :type="item.icon" :size="18"/>
-                                    {{item.title}}
-                                </template>
-                                <MenuItem v-for="(value, key) in item.children"
-                                          :key="`${key}-${index}`"
-                                          :to="{name: value.name}"
-                                          :name="value.name">
-                                    <span>{{value.title}}</span>
-                                </MenuItem>
-                            </Submenu>
-                            <MenuItem v-else :name="item.name" class="ivu-menu-item-left">
-                                <Icon :type="item.icon" :size="18"/>
-                                <span>{{item.title}}</span>
-                            </MenuItem>
-                        </template>
-                    </Menu>
-                </Sider>
-            </template>
 
             <Layout>
                 <Layout class="content-layout">
@@ -99,42 +81,17 @@
                 menus: state => state.common.menus,
                 usedRouter: state => state.common.usedRouter
             }),
-            topAllMenus() {
-                return this.menus.filter(val => val.parent_id === 0);
-            },
             treeData() {
                 return this.setTreeData(0);
             }
         },
-        mounted() {
-            this.$nextTick(() => {
-                let item = this.menus.find(val => val.name === this.$route.name);
-                let select = this.getFather(item);
-                if(Boolean(select.id)){
-                    this.topChange(select.id);
-                }else{
-                    this.topSelect = {};
-                }
-            });
-        },
         methods: {
-            topChange(id) {
-                let item = this.treeData.find(val => val.id === id);
-                if (Boolean(item.id)) {
-                    this.topSelect = item;
-                    if(!Boolean(item.children)){
-                        this.push(item.name);
-                    }
-                } else {
-                    this.topSelect = {};
-                }
+            topChange(name) {
+                if (this.$route.name !== name) this.$router.push({name: name});
             },
             exit() {
                 this.$cache.clear();
                 window.location.reload();
-            },
-            push(name) {
-                if (this.$route.name !== name) this.$router.push({name: name});
             },
             setTreeData(parent_id) {
                 let cloneData = JSON.parse(JSON.stringify(this.menus))
@@ -144,24 +101,12 @@
                     });
                     if (branchArr.length > 0) {
                         father['children'] = branchArr
+                    }else{
+                        father['children'] = [];
                     }
                     return father['parent_id'] === parent_id
                 });
-            },
-            getFather(item) {
-                if (!Boolean(item) || !Boolean(item.parent_id)) {
-                    return {};
-                }
-
-                let father = this.menus.find(val => val.id === item.parent_id);
-                if (!Boolean(father.id)) {
-                    return {};
-                }
-                if (father.parent_id === 0) {
-                    return father;
-                }
-                return this.getFather(father);
-            },
+            }
         }
     }
 </script>
