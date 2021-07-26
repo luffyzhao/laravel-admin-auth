@@ -4,8 +4,8 @@ module.exports = {
     productionSourceMap: false,
     pages: {
         manage: {
-            entry: 'src/manage.js',
-            filename: '../resources/views/manage.blade.php',
+            entry: 'src/index.js',
+            filename: '../resources/views/vue/manage.blade.php',
             template: 'src/template/manage.html',
             chunks: ['chunk-vendors', 'chunk-common', 'manage']
         }

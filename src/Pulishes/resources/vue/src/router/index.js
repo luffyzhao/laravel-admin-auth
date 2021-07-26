@@ -1,44 +1,15 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import {routes} from './manage/routes'
 import $common from '../store/index';
 
 
-let father = {
-    path: '/',
-    name: 'layout',
-    component: () => import('../views/Layout.vue'),
-    children: [
-        {
-            path: 'layout-404',
-            name: 'layout-404',
-            component: () => import(`../views/error/layout-404.vue`),
-        }
-    ]
-};
-
 Vue.use(VueRouter);
 
-// 解决报错
-const originalPush = VueRouter.prototype.push
-const originalReplace = VueRouter.prototype.replace
-// push
-VueRouter.prototype.push = function push(location, onResolve, onReject) {
-    if (onResolve || onReject) return originalPush.call(this, location, onResolve, onReject)
-    return originalPush.call(this, location).catch(err => err)
-}
-// replace
-VueRouter.prototype.replace = function push(location, onResolve, onReject) {
-    if (onResolve || onReject) return originalReplace.call(this, location, onResolve, onReject)
-    return originalReplace.call(this, location).catch(err => err)
-}
 
-const router = new VueRouter({
-    routes
-});
+const router = new VueRouter();
 
 const modules = document.head.querySelector("[property~='og:modules'][content]").content || null;
-let common = import(`./${modules}/index.js`);
+let commonModules = import(`./${modules}/index.js`);
 
 /**
  *
@@ -55,25 +26,19 @@ function GetRequest() {
 const href = GetRequest();
 
 
-
-common.then((res, index) => {
-    for (let key in res.default){
-        res.default[key].forEach((i) => {
-            father.children.push(i);
-        })
-    }
-    router.addRoutes([father]);
+commonModules.then((res) => {
+    res.routes.forEach((route) => {
+        router.addRoute(route);
+    })
 }).finally(() => {
-    router.push({
-        path: href
-    });
+    router.push({path: href});
 });
 
 
 router.beforeEach((to, from, next) => {
     let isLogin = Boolean($common.state.common.token);
     if (!Boolean(to.name) && isLogin) {
-        next({name: 'layout-404'})
+        next({name: '404'})
     } else if (!Boolean(to.name) && !isLogin) {
         next({name: '404'})
     } else {

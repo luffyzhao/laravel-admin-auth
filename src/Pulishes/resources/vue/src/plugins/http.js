@@ -2,8 +2,11 @@ import axios from 'axios'
 import {$cache} from "./cache";
 import {Notice} from 'view-design'
 
+let baseUrl = document.head.querySelector("[property~='og:url'][content]").content || null;
+
 const instance = axios.create({
-    timeout: 10000
+    timeout: 10000,
+    baseURL: baseUrl
 });
 
 instance.download = (url, data) => {
