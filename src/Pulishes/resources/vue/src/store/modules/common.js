@@ -26,6 +26,15 @@ let mutations = {
             }
             $cache.set('$store/auth/usedRouter', state.usedRouter);
         }
+    },
+    logout(state){
+        $cache.clear();
+        state.token = null;
+        state.menus = [];
+        state.usedRouter = [];
+        if(router.currentRoute.name !== 'login'){
+            router.push({name: 'login'});
+        }
     }
 };
 

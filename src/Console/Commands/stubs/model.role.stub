@@ -85,7 +85,7 @@ class __Module__Role extends Model
             return Cache::tags(get_class(self) . Config::get('.authorities.role_menus_table'))->remember($cacheKey, Config::get('cache.ttl', 2678400), function () {
                 return $this->menus()->orderBy('sort')->get(['id', 'name', 'parent_id', 'title', 'icon']);
             });
-        } else return $this->menus()->orderBy('sort')->get(['id', 'name', 'parent_id', 'title'. 'icon']);
+        } else return $this->menus()->orderBy('sort')->get(['id', 'name', 'parent_id', 'title', 'icon']);
     }
 
     /**

@@ -16,7 +16,7 @@ class Create__Module__AuthModuleTable extends Migration
     {
         Schema::create('__SModule___authorities', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name', 20)->comment('权限名称');
+            $table->string('name', 50)->comment('权限名称');
             $table->string('uri', 100)->unique()->comment('权限name');
             $table->string('description', 255)->nullable()->comment('权限描述');
             $table->timestamps();

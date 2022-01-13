@@ -1,5 +1,6 @@
 import axios from 'axios'
 import {$cache} from "./cache";
+import $store from "../store/index";
 import {Notice} from 'view-design'
 
 let baseUrl = document.head.querySelector("[property~='og:url'][content]").content || null;
@@ -47,13 +48,16 @@ instance.interceptors.response.use((response) => {
                 });
                 break;
             case 403:
-                desc = "登录过期了";
+            case 401:
+                desc = '登录失效，请重新登录！';
+                $store.commit('common/logout');
+                break;
             default:
                 desc = error.response.data.message || '服务器错误,请联系管理员!';
                 break;
         }
     }
-    Notice.error({title: '数据验证错误', desc, duration: 12});
+    Notice.error({title: '错误', desc, duration: 12});
     return Promise.reject(error.response);
 });
 
