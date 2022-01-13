@@ -27,13 +27,10 @@ const href = GetRequest();
 
 
 commonModules.then((res) => {
-    res.routes.forEach((route) => {
-        router.addRoute(route);
-    })
+    router.addRoutes(res.routes);
 }).finally(() => {
     router.push({path: href});
 });
-
 
 router.beforeEach((to, from, next) => {
     let isLogin = Boolean($common.state.common.token);
