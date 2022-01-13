@@ -60,7 +60,7 @@ class UserRequest extends FormRequest
     public function withValidator(Validator $validator){
         if($this->route()->getName() === 'user.update'){
             $validator->addRules([
-                'email' => ['required', 'email', Rule::unique('__SModule___users')->ignore($this->route('user'))],
+                'email' => ['required', 'email', Rule::unique('__SModule___users')->ignore($this->route('id'))],
             ]);
         }else{
             $validator->addRules([
