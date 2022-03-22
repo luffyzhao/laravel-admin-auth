@@ -4,6 +4,11 @@
 
 >  composer require luffyzhao/laravel-admin-auth
 
-1. 注释 `app.php`  配置文件里的  `App\Providers\RouteServiceProvider::class, `
-2. 把`vendor/luffyzhao/laravel-admin-auth/src` 下面的 `package.json`和`webpack.mix.js`拿到根目录
-3. 把 `vendor/luffyzhao/laravel-admin-auth/src/Pulishes\resources\vue`目录复制到 `resources` 目录 
+### mange 管理模块
+> php artisan make:auth-module manage
+
+> php artisan migrate
+
+> php artisan make:auth-seeder manage
+
+> php artisan publish:vue
