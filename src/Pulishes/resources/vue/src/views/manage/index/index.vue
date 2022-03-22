@@ -1,23 +1,22 @@
 <template>
-    <IContent v-model="componentProps">
-1111
-    </IContent>
+  <IContent v-model="componentProps">
+    <Alert>面板自定义</Alert>
+  </IContent>
 </template>
 
 <script>
-    import IContent from "../../../components/layout/IContent";
-    import IContentMixins from "../../../mixins/iContentMixins"
+import IContent from "../../../components/layout/IContent";
+import IContentMixins from "../../../mixins/iContentMixins"
 
-    export default {
-        components: {
-			IContent
-        },
-        mixins: [IContentMixins],
-        data() {
-            return {
-            }
-        }
-    }
+export default {
+  components: {
+    IContent
+  },
+  mixins: [IContentMixins],
+  data() {
+    return {}
+  }
+}
 </script>
 
 <style>

@@ -52,8 +52,8 @@
 </template>
 
 <script>
-    import IDrawerMixins from "../../../../mixins/iDrawerMixins";
-    import IDrawer from "../../../../components/layout/IDrawer";
+    import IDrawerMixins from "@/mixins/iDrawerMixins";
+    import IDrawer from "@/components/layout/IDrawer";
     import data from "./data";
 
     export default {

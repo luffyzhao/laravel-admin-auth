@@ -1,7 +1,7 @@
 <template>
     <Col :span="span" class="item-col item-col-has-title" >
         <span class="item-col-title">{{title}}:</span>
-        <div class="item-col-desc">
+        <div class="item-col-desc" ref="desc">
             <slot></slot>
         </div>
     </Col>
@@ -28,7 +28,6 @@
         padding-left: 100px;
     }
     .item-col {
-
         position: relative;
         min-height: 30px;
         line-height: 30px;

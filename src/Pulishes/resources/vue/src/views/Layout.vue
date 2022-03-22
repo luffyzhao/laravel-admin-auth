@@ -2,24 +2,11 @@
   <Layout class="layout">
     <Header>
       <div class="layout-logo"></div>
-      <Menu mode="horizontal" theme="dark" class="layout-menu" :active-name="topSelect.id"
-            @on-select="topChange">
-        <MenuItem v-for="(item, index) in treeData" :name="item.name" :key="item.id" v-if="item.children.length === 0">
-          <Icon :type="item.icon" :size="20"/>
-          {{item.title}}
+      <Menu mode="horizontal" theme="dark" class="layout-menu">
+        <MenuItem v-for="(item, index) in treeData" :key="item.id" :name="item.name">
+          <DropdownSynchronize placement="bottom" :children="item" icon="ios-arrow-down"></DropdownSynchronize>
         </MenuItem>
-        <Submenu :name="item.name" :key="`sub${index}`" v-else>
-          <template slot="title">
-            <Icon type="ios-stats" />
-            {{item.title}}
-          </template>
-          <MenuItem v-for="(val, key) in item.children" :name="val.name" :key="`MenuItem${val.id}`" v-if="val.children.length === 0">{{val.title}}</MenuItem>
-          <MenuGroup :title="val.title" v-else>
-            <MenuItem v-for="(value, k) in val.children" :name="value.name" :key="`MenuItem${value.id}`">{{value.title}}</MenuItem>
-          </MenuGroup>
-        </Submenu>
       </Menu>
-
       <div class="layout-header-right">
         <Badge :count="1000" overflow-count="2" dot class="badge">
           <Avatar icon="ios-person" shape="square" :size="30"/>
@@ -29,6 +16,7 @@
                 </span>
       </div>
     </Header>
+
     <Layout class="ivu-layout-has-sider">
 
       <Layout>
@@ -52,16 +40,15 @@
               <template v-for="(item, index) in usedRouter">
                 <div v-if="item.name === $route.name" class="sider-router-tag sider-router-tag-active"
                      @click="push(item.name)">
-                  <span class="ivu-tag-text ivu-tag-color-white">{{item.meta.name}}</span>
+                  <span class="ivu-tag-text ivu-tag-color-white">{{ item.meta.name }}</span>
                 </div>
                 <div v-else class="sider-router-tag" @click="push(item.name)">
-                  <span class="ivu-tag-text ivu-tag-color-white">{{item.meta.name}}</span>
+                  <span class="ivu-tag-text ivu-tag-color-white">{{ item.meta.name }}</span>
                 </div>
               </template>
             </div>
           </Sider>
         </Layout>
-        <Footer class="layout-footer-center">2011-2016 &copy; TalkingData</Footer>
       </Layout>
 
     </Layout>
@@ -69,8 +56,10 @@
 </template>
 <script>
 import {mapState, mapMutations} from 'vuex'
+import DropdownSynchronize from "@/components/layout/DropdownSynchronize";
 
 export default {
+  components: {DropdownSynchronize},
   data() {
     return {
       topSelect: {}
@@ -89,13 +78,11 @@ export default {
     ...mapMutations({
       logout: 'common/logout'
     }),
-    topChange(name) {
-      if (this.$route.name !== name) this.$router.push({name: name});
-    },
+
     exit() {
       this.logout();
     },
-    push(name){
+    push(name) {
       this.$router.push({name});
     },
     setTreeData(parent_id) {
@@ -106,7 +93,7 @@ export default {
         });
         if (branchArr.length > 0) {
           father['children'] = branchArr
-        }else{
+        } else {
           father['children'] = [];
         }
         return father['parent_id'] === parent_id
@@ -174,14 +161,14 @@ export default {
 }
 
 .content-body {
-  padding: 24px 0 24px 24px;
+  padding: 5px;
   background: #fff;
   border-radius: 5px;
 }
 
 .router-content-body {
   overflow: hidden;
-  height: calc(100vh - 193px);
+  height: calc(100vh - 90px);
 }
 
 .sider-right {

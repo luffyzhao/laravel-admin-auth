@@ -1,18 +1,18 @@
 <template>
-    <IDrawer v-model="defaultValue" :loading="loading">
+  <IDrawer v-model="defaultValue" :loading="loading">
 
-    </IDrawer>
+  </IDrawer>
 </template>
 
 <script>
-    import IDrawerMixins from "../../../../mixins/iDrawerMixins";
-    import IDrawer from "../../../../components/layout/IDrawer";
+import IDrawerMixins from "@/mixins/iDrawerMixins";
+import IDrawer from "@/components/layout/IDrawer";
 
-    export default {
-        name: "create",
-        components: {IDrawer},
-        mixins: [IDrawerMixins]
-    }
+export default {
+  name: "create",
+  components: {IDrawer},
+  mixins: [IDrawerMixins]
+}
 </script>
 
 <style scoped>

@@ -19,8 +19,8 @@
 
 <style scoped>
     .i-search {
-        padding: 10px;
-        border-bottom: #e8eaec 1px solid;
+        padding: 5px;
+        /*border-bottom: #e8eaec 1px solid;*/
     }
 </style>
 <style lang="less">

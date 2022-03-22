@@ -1,5 +1,5 @@
 <template>
-    <Tag>{{defaultValue}}</Tag>
+    <span>{{defaultValue}}</span>
 </template>
 
 <script>

@@ -1,16 +1,16 @@
 export default {
-    data(){
+    data() {
         return {
             loading: true,
             data: {
-                parent_id : 0,
+                parent_id: 0,
                 authorities: []
             },
             authorities: {
                 data: []
             },
             ruleValidate: {
-               title: [
+                title: [
                     {required: true, message: '菜单标题必须填写', trigger: 'blur'},
                     {type: 'string', min: 2, max: 20, message: '菜单标题字符长度是2-20个字符', trigger: 'blur'}
                 ],

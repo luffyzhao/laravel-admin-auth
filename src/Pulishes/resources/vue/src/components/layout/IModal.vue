@@ -1,5 +1,5 @@
 <template>
-    <Modal v-model="defaultValue" :transfer="false" :footer-hide="footerHide" :mask-closable="false"
+    <Modal v-model="defaultValue" :transfer="transfer" :footer-hide="footerHide" :mask-closable="false"
             :width="width">
         <p slot="header" style="color:#f60;text-align:center">
             <slot name="title"><span>{{title}}</span></slot>
@@ -37,6 +37,10 @@
             footerHide: {
                 type: Boolean,
                 default: false
+            },
+            transfer: {
+                type: Boolean,
+                default: false
             }
         },
         computed: {
@@ -54,6 +58,7 @@
 <style scoped>
     .modal-body {
         height: calc(100% - 53px);
+        max-height: calc(100vh - 350px);
         overflow-y: auto;
         margin-right: -16px;
         padding-right: 16px;

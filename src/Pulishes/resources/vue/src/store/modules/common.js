@@ -9,6 +9,7 @@ let state = {
 };
 
 let mutations = {
+    // 设置token
     setToken(state, token) {
         state.token = token;
         $cache.set('$store/auth/token', token);
@@ -27,12 +28,12 @@ let mutations = {
             $cache.set('$store/auth/usedRouter', state.usedRouter);
         }
     },
-    logout(state){
+    logout(state) {
         $cache.clear();
         state.token = null;
         state.menus = [];
         state.usedRouter = [];
-        if(router.currentRoute.name !== 'login'){
+        if (router.currentRoute.name !== 'login') {
             router.push({name: 'login'});
         }
     }

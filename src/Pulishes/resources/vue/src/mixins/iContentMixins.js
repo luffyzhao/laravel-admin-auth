@@ -17,7 +17,7 @@ export default {
                 selections: []
             },
             loading: true,
-            search: {}
+            search: {},
         }
     },
     mounted() {

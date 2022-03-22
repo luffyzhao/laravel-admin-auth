@@ -1,16 +1,19 @@
 <template>
-    <Table :columns="columns" :data="value">
-        <template slot-scope="{ row, index }" slot="name">
-            {{row.user === null ? '系统自动' : row.user.name}}
-        </template>
-        <template slot-scope="{ row, index }" slot="foreign">
-            <RemoteSpan url="common/select/dictionary/LOGS_USER_TYPE" :value="row.foreign"></RemoteSpan>
-        </template>
-    </Table>
+    <div class="h-100">
+        <Table :columns="columns" :data="value" :height="height" ref="table" size="small">
+            <template slot-scope="{ row, index }" slot="foreign">
+                <RemoteSpan url="common/select/dictionaries/LOG_FOREIGN" v-model="row.foreign"></RemoteSpan>
+            </template>
+            <template slot-scope="{ row, index }" slot="user">
+                {{row.user.name}}
+            </template>
+        </Table>
+    </div>
 </template>
 
 <script>
     import RemoteSpan from "./RemoteSpan";
+    import ResizeObserver from "resize-observer-polyfill";
     export default {
         name: "ILogs",
         components: {RemoteSpan},
@@ -20,27 +23,43 @@
                 default: () => []
             }
         },
+        mounted() {
+            this.handleResize()
+        },
         data(){
             return {
+                height: 200,
                 columns: [{
                     title: '序号',
                     width: 80,
                     render: (h, {row, column, index}) => {
                         return h('div', index + 1);
-                    }
-                }, {
-                    title: '操作人类型',
+                    },
+                    sortable: true
+                },{
+                    title: '操作系统',
                     slot: 'foreign'
                 },{
                     title: '操作人',
-                    slot: 'name'
+                    slot: 'user'
                 }, {
                     title: '操作备注',
                     key: 'remark'
                 }, {
                     title: '操作时间',
-                    key: 'created_at'
+                    key: 'created_at',
+                    sortable: true
                 }]
+            }
+        },
+        methods:{
+            handleResize(){
+                const robserver = new ResizeObserver((entries) => {
+                    const entry = entries[0];
+                    const {height} = entry.contentRect;
+                    this.height = height;
+                });
+                robserver.observe(this.$el);
             }
         }
     }
