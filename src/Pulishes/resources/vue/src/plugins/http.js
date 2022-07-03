@@ -1,7 +1,6 @@
 import axios from 'axios'
-import {$cache} from "./cache";
-import $store from "../store/index";
-import {Notice} from 'view-design'
+import {session} from "@/reactive/session";
+import {Notice} from 'view-ui-plus'
 
 let baseUrl = document.head.querySelector("[property~='og:url'][content]").content || null;
 
@@ -21,7 +20,7 @@ instance.interceptors.request.use((config) => {
     config.headers = {
         'Accept': 'application/json'
     }
-    let $token = $cache.get('$store/auth/token');
+    let $token = session["$store/auth/token"];
     if ($token) {
         config.headers['authorization'] = 'bearer ' + $token;
     }
@@ -35,38 +34,30 @@ instance.interceptors.request.use((config) => {
 // 添加响应拦截器
 instance.interceptors.response.use((response) => {
     // 对响应数据做点什么
+    if(Boolean(response.headers.authorization)){
+
+    }
     return response.data;
 }, (error) => {
-    let desc = '';
+    let desc = '', title = '请求失败';
     if (!error.response) {
         desc = '网络请求失败!';
-    } else {
-        switch (error.response.status) {
-            case 422:
-                Object.values(error.response.data.errors).forEach((item) => {
-                    desc += item.join('<br />') + '<br />';
-                });
-                break;
-            case 403:
-            case 401:
-                desc = '登录失效，请重新登录！';
-                $store.commit('common/logout');
-                break;
-            default:
-                desc = error.response.data.message || '服务器错误,请联系管理员!';
-                break;
+    } else if(error.response.status === 403){
+        title =  error.response.data.message;
+        for (const descKey in error.response.data.data) {
+            desc += error.response.data.data[descKey].join("<br/>");
         }
+    }else{
+        desc = error.response.data.message || '服务器错误,请联系管理员!';
     }
-    Notice.error({title: '错误', desc, duration: 12});
+    Notice.error({title, desc, duration: 12});
     return Promise.reject(error.response);
 });
 
 
 export default {
-    install(Vue, options) {
-        instance.defaults = Object.assign({} , instance.defaults, options);
-        Vue.prototype.$http = instance;
-        Vue.http = instance;
+    install(Vue) {
+        Vue.config.globalProperties.$http = instance;
     }
 }
 

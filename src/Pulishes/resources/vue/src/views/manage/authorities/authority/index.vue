@@ -1,99 +1,103 @@
 <template>
-  <IContent v-model="componentProps" @on-change="getLists">
+    <BodyContent v-model="component">
+        <BodyTable v-model="table.page" :columns="table.columns" :data="table.data" :loading="table.loading"
+                   @on-refresh="handleSearch" title="部门管理" ref="bodyTable">
+            <template #header-left>
+                <Button type="primary" icon="md-add" @click="handleCreate">新增</Button>
+                <Button type="primary" icon="md-create" @click="handleUpdate(`bodyTable`)">修改</Button>
+                <Button type="error" icon="ios-archive" @click="handleRemove(`bodyTable`)">删除</Button>
+            </template>
 
-    <ISearch v-model="search">
-      <FormItem label="权限名称">
-        <Input v-model="search.name" placeholder="权限名称" size="small"></Input>
-      </FormItem>
-      <FormItem label="请求URI">
-        <Input v-model="search.uri" placeholder="URI" size="small"></Input>
-      </FormItem>
-      <FormItem :label-width="1">
-        <ButtonGroup>
-          <Button type="primary" icon="ios-search" size="small" @click="getLists(1)">搜索</Button>
-          <Button type="success" icon="ios-add" size="small" @click="openComponent(ICreate)">添加</Button>
-        </ButtonGroup>
-      </FormItem>
-    </ISearch>
+            <template #search>
+                <BodyTableSearch title="部门名称">
+                    <Input v-model="table.search.name" placeholder="部门名称" size="small"></Input>
+                </BodyTableSearch>
+                <ButtonGroup>
+                    <Button size="small" @click="handleSearch(1)">查询</Button>
+                </ButtonGroup>
+            </template>
 
-    <IOperate>
-      <Button type="warning" size="small" @click="openComponent(IUpdate, `table`)">
-        编辑
-      </Button>
-      <Button type="error" size="small" @click="submitForRemove(`table`)">删除</Button>
-    </IOperate>
-
-    <ITable :current="page.current" :table="table" :total="page.total" @on-page-change="pageChange" :loading="loading"
-            selection ref="table">
-      <template slot-scope="{ row, index }" slot="name">
-        <span>{{ row.name }}</span>
-      </template>
-      <template slot-scope="{ row, index }" slot="uri">
-        <span>{{ row.uri }}</span>
-      </template>
-      <template slot-scope="{ row, index }" slot="description">
-        <span>{{ row.description }}</span>
-      </template>
-    </ITable>
-
-  </IContent>
+            <template #name="{ row, index }">
+                <span>{{ row.name }}</span>
+            </template>
+            <template #uri="{ row, index }">
+                <span>{{ row.uri }}</span>
+            </template>
+            <template #description="{ row, index }">
+                <span>{{ row.description }}</span>
+            </template>
+            <template #action="{ row, index }">
+                <ButtonGroup>
+                    <Button type="error" size="small" @click="submitForRemove(row)">删除</Button>
+                </ButtonGroup>
+            </template>
+        </BodyTable>
+    </BodyContent>
 </template>
 
 <script>
-import IContent from "@/components/layout/IContent";
-import ISearch from "@/components/layout/ISearch";
-import ITable from "@/components/layout/ITable";
-import IContentMixins from "@/mixins/iContentMixins"
-import IOperate from "@/components/layout/IOperate";
+import BodyContent from "@/components/layout/BodyContent";
+import BodyTable from "@/components/layout/body/BodyTable";
+import BodyTableSearch from "@/components/layout/body/BodyTableSearch";
+import CommonMixin from "@/mixins/common";
+import Create from "./create"
+import Update from "./update"
+
 
 export default {
-  components: {
-    IOperate,
-    ITable, ISearch, IContent
-  },
-  mixins: [IContentMixins],
-  data() {
-    return {
-      ICreate: () => import('./create'),
-      IUpdate: () => import('./update'),
-      table: {
-        columns: [
-          {
-            title: '权限名称',
-            slot: 'name'
-          },
-          {
-            title: 'URI',
-            slot: 'uri'
-          },
-          {
-            title: '请求描述',
-            slot: 'description'
-          }
-        ]
-      },
-      search: {}
-    }
-  },
-  methods: {
-    getLists(page = 1) {
-      this.loading = true;
-      this._lists(`authorities/authority`, page);
+    name: "index",
+    mixins: [CommonMixin],
+    components: {BodyTableSearch, BodyTable, BodyContent, Create, Update},
+    data() {
+        return {
+            table: {
+                search: {},
+                columns: [
+                    {
+                        title: '权限名称',
+                        slot: 'name'
+                    },
+                    {
+                        title: 'URI',
+                        slot: 'uri'
+                    },
+                    {
+                        title: '请求描述',
+                        slot: 'description'
+                    }
+                ]
+            }
+        }
     },
-    submitForRemove(table) {
-      this._selectionOne(table).then((row) => {
-        this._confirm().then(() => {
-          this.loading = true;
-          this.$http.delete(`authorities/authority/${row.id}`)
-              .then(() => {
-                this.getLists(this.page.current)
-              });
-        });
-      });
+    methods: {
+        handleSearch(page) {
+            this.handleRefresh(`authorities/authority`, page);
+        },
+        submitForRemove(data) {
+            this.confirm().then((res) => {
+               this.table.loading = true;
+                this.$http.delete(`authorities/authority/${data.id}`).finally(() => {
+                    this.table.loading = false
+                })
+            });
+        },
+        handleRemove(name) {
+            this.getSelectionOne(name).then((row) => {
+                this.submitForRemove(row);
+            });
+        },
+        handleCreate() {
+            this.openComponent(Create)
+        },
+        handleUpdate(name) {
+            this.getSelectionOne(name).then((row) => {
+                this.openComponent(Update, row);
+            });
+        }
     }
-  }
 }
 </script>
 
-<style>
+<style scoped>
+
 </style>

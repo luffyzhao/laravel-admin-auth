@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class __Module__User extends Authenticatable
 {
-    protected $fillable = ['role_id', 'name', 'phone', 'email', 'password', 'status', 'remark'];
+    protected $fillable = ['role_id', 'name', 'email', 'password', 'status', 'remark'];
 
     protected $hidden = [
         'password'

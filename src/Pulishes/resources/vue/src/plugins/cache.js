@@ -9,9 +9,8 @@ if (modules == null) {
 Storage.defaults['pre'] = modules;
 
 export default {
-    install(Vue, options) {
-        Vue.prototype.$cache = Storage;
-        Vue.cache = Storage;
+    install(Vue) {
+        Vue.config.globalProperties.$cache = Storage;
     }
 }
 

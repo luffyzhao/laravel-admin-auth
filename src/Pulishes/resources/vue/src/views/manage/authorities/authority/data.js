@@ -1,6 +1,15 @@
+import CommonMixin from "@/mixins/common";
+
 export default {
+    mixins:[CommonMixin],
+    computed: {
+        checkedMenus() {
+            return this.toChecked(JSON.parse(JSON.stringify(this.menus.data)))
+        }
+    },
     data() {
         return {
+            show: true,
             loading: true,
             data: {},
             menus: {

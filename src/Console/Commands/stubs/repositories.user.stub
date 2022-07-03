@@ -55,11 +55,7 @@ class __Module__User extends RepositoryAbstract
      */
     public function create(array $attributes = [])
     {
-        $attributes['password'] = Str::random(12);
         $model = parent::create($attributes);
-
-        Mail::to($model->getAttribute('email'))->send(new UserPasswordMail($attributes));
-
         return $model;
     }
 
@@ -92,9 +88,6 @@ class __Module__User extends RepositoryAbstract
      */
     public function update($id, array $values)
     {
-        if (empty($values['password'])) {
-            unset($values['password']);
-        }
         return parent::update($id, $values);
     }
 

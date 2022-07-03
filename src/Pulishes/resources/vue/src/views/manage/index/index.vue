@@ -1,23 +1,19 @@
 <template>
-  <IContent v-model="componentProps">
-    <Alert>面板自定义</Alert>
-  </IContent>
+  <BodyContent v-model="component">
+
+  </BodyContent>
 </template>
 
 <script>
-import IContent from "../../../components/layout/IContent";
-import IContentMixins from "../../../mixins/iContentMixins"
-
+import BodyContent from "@/components/layout/BodyContent";
+import CommonMixin from "@/mixins/common";
 export default {
-  components: {
-    IContent
-  },
-  mixins: [IContentMixins],
-  data() {
-    return {}
-  }
+  name: "index",
+  mixins: [CommonMixin],
+  components: {BodyContent},
 }
 </script>
 
-<style>
+<style scoped>
+
 </style>

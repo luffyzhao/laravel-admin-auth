@@ -1,25 +1,31 @@
-module.exports = {
-	outputDir: '../../public',
+const {defineConfig} = require('@vue/cli-service')
+module.exports = defineConfig({
+    outputDir: '../../public',
+    lintOnSave: false,
     assetsDir: 'assets',
     productionSourceMap: false,
     pages: {
         manage: {
-            entry: 'src/index.js',
-            filename: '../resources/views/vue/manage.blade.php',
-            template: 'src/template/manage.html',
+            entry: 'src/main.js',
+            filename: '../resources/views/manage.blade.php',
+            template: 'template/manage.html',
+            title: 'Index Page',
             chunks: ['chunk-vendors', 'chunk-common', 'manage']
         }
     },
     configureWebpack: {
         output: {
-            filename: 'js/[name].js?hash=[hash]',
-            chunkFilename: 'js/[name].js?hash=[chunkhash]',
+            filename: 'js/[name].js',
+            chunkFilename: 'js/[name].js',
+        },
+        experiments: {
+            topLevelAwait: true, // 此处为新增配置
         }
     },
     css: {
         extract: {
-            filename: 'css/[name].css?hash=[contenthash]',
-            chunkFilename: 'css/[name].css?hash=[contenthash]'
+            filename: 'css/[name].css',
+            chunkFilename: 'css/[name].css'
         },
     }
-};
+})

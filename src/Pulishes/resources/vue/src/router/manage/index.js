@@ -1,11 +1,11 @@
-import {common} from "./common";
+import {common} from "@/router/manage/common";
 
 export const routes = [
     {
         path: '/',
         name: 'layout',
         component: () => import('../../views/Layout.vue'),
-        redirect: 'home',
+        redirect: '/home',
         children: [
             ...common
         ]
@@ -13,10 +13,10 @@ export const routes = [
     {
         path: '/404',
         name: '404',
-        component: () => import('../../views/error/404.vue'),
+        component: () => import('../../components/error/404.vue'),
     },{
         path: '/login',
         name: 'login',
-        component: () => import('../../views/manage/login/index.vue')
+        component: () => import('../../views/manage/login')
     }
 ];

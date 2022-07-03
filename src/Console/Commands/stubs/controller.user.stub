@@ -65,7 +65,7 @@ class UserController extends Controller
         return $this->response(
             DB::transaction(function () use ($request) {
                 $this->user->create($request->only([
-                    'name', 'email', 'phone', 'role_id', 'status', 'remark'
+                    'name', 'email', 'role_id', 'status', 'remark', 'password'
                 ]));
             })
         );
@@ -116,7 +116,7 @@ class UserController extends Controller
     {
         return $this->response(
             $this->user->update($id, $request->only([
-                'email', 'phone', 'role_id', 'roles', 'status', 'remark'
+                'email', 'role_id', 'roles', 'status', 'remark', 'password'
             ]))
         );
     }

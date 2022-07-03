@@ -1,21 +1,20 @@
 export const common = [
-
     {
         path: 'home',
         name: 'home',
         meta: {name: "首页", history: true},
-        component: () => import('../../views/manage/index/index.vue'),
+        component: () => import('../../views/manage/index'),
     },
     {
-        path: 'authorities.user',
-        name: 'authorities.user',
-        meta: {name: "用户管理", history: true},
-        component: () => import('../../views/manage/authorities/user/index.vue'),
+        path: 'profile',
+        name: 'profile',
+        meta: {name: "个人中心", history: true},
+        component: () => import('../../views/manage/index/profile.vue'),
     },
     {
         path: 'authorities.role',
         name: 'authorities.role',
-        meta: {name: "角色管理", history: true},
+        meta: {name: "部门管理", history: true},
         component: () => import('../../views/manage/authorities/role/index.vue'),
     },
     {
@@ -31,9 +30,9 @@ export const common = [
         component: () => import('../../views/manage/authorities/authority/index.vue'),
     },
     {
-        path: 'profile',
-        name: 'profile',
-        meta: {name: "个人中心", history: true},
-        component: () => import('../../views/manage/index/profile.vue'),
+        path: 'authorities.user',
+        name: 'authorities.user',
+        meta: {name: "用户管理", history: true},
+        component: () => import('../../views/manage/authorities/user/index.vue'),
     }
 ];

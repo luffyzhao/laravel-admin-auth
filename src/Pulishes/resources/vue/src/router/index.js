@@ -1,52 +1,26 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import $common from '../store/index';
-
-
-Vue.use(VueRouter);
-
-
-const router = new VueRouter();
+import {createRouter, createWebHashHistory} from 'vue-router'
+import {session} from "@/reactive/session";
 
 const modules = document.head.querySelector("[property~='og:modules'][content]").content || null;
-let commonModules = import(`./${modules}/index.js`);
-
-/**
- *
- * @returns {string}
- * @constructor
- */
-function GetRequest() {
-    let str = location.href;
-    let num = str.indexOf("#");
-    str = str.substr(num + 1);
-    return str;
-}
-
-const href = GetRequest();
-
-
-commonModules.then((res) => {
-    router.addRoutes(res.routes);
-}).finally(() => {
-    router.push({path: href});
+const router = createRouter({
+    history: createWebHashHistory(),
+    routes: (await import(`./${modules}/index.js`)).routes
 });
 
+
 router.beforeEach((to, from, next) => {
-    let isLogin = Boolean($common.state.common.token);
-    if (!Boolean(to.name) && isLogin) {
-        next({name: '404'})
-    } else if (!Boolean(to.name) && !isLogin) {
-        next({name: '404'})
+    if (Boolean(session["$store/auth/token"]) && to.name === 'login') {
+        next({name: 'home'});
+    } else if (!Boolean(session["$store/auth/token"]) && to.name !== 'login') {
+        next({name: 'login'});
     } else {
-        if (to.name === 'login' && isLogin) {
-            next({name: 'home'})
-        } else if (to.name !== 'login' && !isLogin) {
-            next({name: 'login'})
-        } else {
-            $common.commit('common/setRouter', to);
-            next()
+        if (to.name !== 'login') {
+            let index = session["$store/common/router"].findIndex((val) => val.name === to.name);
+            if (index === -1) {
+                session["$store/common/router"].push(JSON.parse(JSON.stringify(to)));
+            }
         }
+        next();
     }
 });
 

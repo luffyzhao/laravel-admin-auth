@@ -24,10 +24,11 @@ class UserRequest extends FormRequest
     {
         return [
             'name' => ['required', 'min:2', 'max:20'],
-            'phone' => ['required', 'regex:/^1[34578]\d{9}$/'],
             'role_id' => ['required', Rule::exists('__SModule___roles', 'id')],
             'roles' => ['array', 'nullable'],
             'roles.*' => ['integer', Rule::exists('__SModule___roles', 'id')],
+            'password' => ['required', 'min:6', 'max:20', 'confirmed'],
+            'password_confirmation' => ['required',],
             'status' => ['required', 'in:1,0'],
             'remark' => ['nullable', 'max:255'],
         ];

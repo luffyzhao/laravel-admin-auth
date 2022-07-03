@@ -1,7 +1,7 @@
 <template>
-    <IDrawer v-model="defaultValue" width="500" :loading="loading">
+    <BodyModal title="添加" v-model="show" :loading="loading" :width="600">
         <Form :model="data" :rules="ruleValidate" ref="formCreate" label-position="top">
-            <Row :gutter="12">
+            <Row :gutter="12" style="margin: 0;">
                 <Col span="12">
                     <FormItem label="姓名" prop="name">
                         <Input placeholder="请输入姓名" v-model="data.name"></Input>
@@ -10,11 +10,6 @@
                 <Col span="12">
                     <FormItem label="邮箱" prop="email">
                         <Input placeholder="请输入邮箱" v-model="data.email"></Input>
-                    </FormItem>
-                </Col>
-                <Col span="12">
-                    <FormItem label="手机号码" prop="phone">
-                        <Input placeholder="手机号码" v-model="data.phone"></Input>
                     </FormItem>
                 </Col>
                 <Col span="12">
@@ -29,9 +24,19 @@
                     <FormItem label="所属部门" prop="role_id">
                         <Select v-model="data.role_id">
                             <Option v-for="(item) in roles.data" :key="item.id" :value="item.id">
-                                {{item.name}}
+                                {{ item.name }}
                             </Option>
                         </Select>
+                    </FormItem>
+                </Col>
+                <Col span="12">
+                    <FormItem label="更新密码" prop="password">
+                        <Input v-model="data.password" type="password" password></Input>
+                    </FormItem>
+                </Col>
+                <Col span="12">
+                    <FormItem label="确认密码" prop="password_confirmation">
+                        <Input v-model="data.password_confirmation" type="password" password></Input>
                     </FormItem>
                 </Col>
                 <Col span="24">
@@ -40,48 +45,43 @@
                                placeholder="Enter something..."/>
                     </FormItem>
                 </Col>
-                <Col span="24">
-                    <Alert>提示<template slot="desc">密码是系统自动生成并发送到用户邮件。</template></Alert>
-                </Col>
             </Row>
         </Form>
-        <div slot="footer">
+        <template #footer>
             <Button type="primary" icon="ios-add" @click="submit('formCreate')">提交</Button>
-        </div>
-    </IDrawer>
+        </template>
+    </BodyModal>
 </template>
 
 <script>
-    import IDrawerMixins from "@/mixins/iDrawerMixins";
-    import IDrawer from "@/components/layout/IDrawer";
-    import data from "./data";
+import BodyModal from "@/components/layout/body/BodyModal";
+import IData from "./data"
 
-    export default {
-        name: "update",
-        components: {IDrawer},
-        mixins: [IDrawerMixins, data],
-        mounted() {
-            this.$http(`authorities/user/${this.props.id}/edit`).then((res) => {
-                this.data = res.row
-                this.roles.data = res.roles;
-                this.loading = false
-            });
-        },
-        methods: {
-            submit(name) {
-                this.loading = true;
-                this.validate(name).then(() => {
-                    this.$http.put(`authorities/user/${this.props.id}`, this.data).then(() => {
-                        this.$Message.success('更新成功')
-                    }).finally(() => {
-                        this.loading = false;
-                    });
-                }).catch();
-            }
+export default {
+    name: "create",
+    mixins: [IData],
+    components: {BodyModal},
+    data() {
+    },
+    mounted() {
+        this.$http(`authorities/user/${this.props.id}/edit`).then((res) => {
+            this.data = res.row
+            this.roles.data = res.roles;
+            this.loading = false
+        });
+    },
+    methods: {
+        submit(name) {
+            this.loading = true;
+            this.validate(name).then(() => {
+                this.$http.put(`authorities/user/${this.props.id}`, this.data).then(() => {
+                    this.$Message.success('更新成功')
+                }).finally(() => {
+                    this.loading = false;
+                });
+            }).catch();
         }
     }
+}
 </script>
 
-<style scoped>
-
-</style>
