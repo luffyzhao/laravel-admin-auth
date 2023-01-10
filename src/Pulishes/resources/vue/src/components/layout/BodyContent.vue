@@ -2,6 +2,8 @@
     <div class="body-content" :style="styles" v-resize="handleResize">
         <div :class="class1">
             <slot></slot>
+            <component v-if="modelValue.renderModal !== null" :is="modelValue.renderModal" :props="modelValue.propsModal"
+                       @on-visible-change="handleVisibleChange"></component>
         </div>
         <component v-if="modelValue.render !== null" :is="modelValue.render" :props="modelValue.props"
                    @on-visible-change="handleVisibleChange"></component>
@@ -21,6 +23,7 @@ const defaultModelValue = {
 export default {
     name: "BodyContent",
     components: {Trigger},
+    emits: ['on-visible-change'],
     props: {
         modelValue: {
             type: Object,
@@ -45,11 +48,12 @@ export default {
         }
     },
     methods: {
-        handleVisibleChange() {
+        handleVisibleChange(v) {
             this.$emit("update:modelValue", {
                 props: {},
                 render: null
-            })
+            });
+            this.$emit('on-visible-change', v);
         },
         handleResize() {
             this.styles = {

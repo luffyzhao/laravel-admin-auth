@@ -45,5 +45,6 @@ export default {
 .modal-body {
     max-height: 60vh !important;
     overflow-y: auto;
+    padding: 10px;
 }
 </style>

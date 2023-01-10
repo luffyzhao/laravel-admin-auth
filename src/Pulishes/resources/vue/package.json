@@ -14,7 +14,10 @@
     "storage-web": "^4.0.0-alpha.5",
     "view-ui-plus": "^1.2.0",
     "vue": "^3.2.13",
-    "vue-router": "^4.0.16"
+    "vue-router": "^4.0.16",
+    "url": "^0.11.0",
+    "file-saver": "^2.0.5",
+    "vue3-print-nb": "^0.1.4"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",

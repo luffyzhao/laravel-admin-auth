@@ -31,6 +31,7 @@ import RouterList from "@/components/layout/RouterList";
 import LayoutMenu from "@/components/layout/Menu";
 import LayoutFooter from "@/components/layout/Footer";
 import {session} from "@/reactive/session";
+import {$cache} from '@/plugins/cache'
 
 export default {
     name: "LayoutMain",
@@ -45,15 +46,14 @@ export default {
             this.$router.push({name})
         },
         exit(){
-            session["$store/auth/token"] = null;
-            session["$store/auth/menu"] = [];
-            this.$Message.loading({
-                content: "跳转中...",
-                duration: 5
-            });
-            this.$router.push({
-                name: "login"
-            });
+          session["$store/auth/token"] = null;
+          session["$store/auth/menu"] = [];
+          $cache.clear({
+            use: 'session'
+          });
+          $cache.clear({
+            use: 'local'
+          });
         }
     }
 }
