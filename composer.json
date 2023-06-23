@@ -8,7 +8,7 @@
         }
     ],
     "require": {
-        "luffyzhao/laravel-tools": "^v4.0",
+        "luffyzhao/laravel-tools": "^v5.0",
         "ext-json": "*",
         "illuminate/database": ">=5",
         "illuminate/cache": ">=5",
